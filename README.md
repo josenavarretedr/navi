@@ -1,5 +1,7 @@
 # navi
 
+Este es el primer sistema de gestión de usuarios para nuestra escuela virtual.
+
 ## Project setup
 ```
 npm install
