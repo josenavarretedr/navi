@@ -1,15 +1,15 @@
 <template>
   <v-container>
-    <v-row class="d-flex justify-space-around">
-      <v-col cols="10" md="8">
+    <v-row style="border: 1px red solid">
+      <v-col cols="10" offset="1">
         <p class="headline">Completa los datos del curso a crear</p>
         <p class="text-justify">A continuación se te pedirá información sobre el curso que se va a crear, toma en cuenta
           que una modificación tendrás que llamar al soporte y a jose no le gusta esto >:V </p>
       </v-col>
       
-      <v-col cols="10" md="8">
+      <v-col cols="10" offset="1">
         <v-card class="px-3 py-4">
-          <v-form v-model="valid" class="mt-0">
+          <v-form v-model="valid" class="mt-0" ref="form">
             <v-container>
               <v-row>
                 <v-col cols="12">
@@ -17,18 +17,21 @@
                     Información básica
                   </p>
                 </v-col>
-                <v-col cols="12" md="6">
+                <v-col class="d-flex" cols="12" md="4">
+                  <v-select :items="kindProgramItems" label="Tipo de Programa" v-model="info.kindProgram"></v-select>
+                </v-col>
+                <v-col cols="12" md="4">
                   <v-text-field v-model="info.fullName" label="Nombre Completo" required>
                   </v-text-field>
                 </v-col>
 
-                <v-col cols="12" md="6">
+                <v-col cols="12" md="4">
                   <v-text-field v-model="info.shortName" label="Nombre corto" required>
                   </v-text-field>
                 </v-col>
 
-                <v-col cols="6">
-                  <v-text-field v-model="info.edition" label="Edición" required>
+                <v-col cols="2">
+                  <v-text-field v-model="info.edition" label="Edición" type="number" required>
                   </v-text-field>
                 </v-col>
 
@@ -43,7 +46,8 @@
                 </v-col>
 
                 <v-col cols="12" md="6">
-                  <v-text-field v-model="info.description" label="Descripción" required>
+                  <!-- TODO crear regla para 120 carácteres -->
+                  <v-text-field v-model="info.description" label="Descripción" required counter>
                   </v-text-field>
                 </v-col>
               </v-row>
@@ -56,7 +60,7 @@
                 </v-col>
 
                 <v-col class="d-flex" cols="12" sm="6">
-                  <v-select :items="items" label="Frecuencia" v-model="config.frequency"></v-select>
+                  <v-select :items="frequencyItems" label="Frecuencia" v-model="config.frequency"></v-select>
                 </v-col>
 
                 <v-col>
@@ -108,13 +112,15 @@
       return {
         valid: false,
         menu: false,
-        items: ['semanal', 'quincenal'],
+        kindProgramItems: ['Curso','Seminarios','Programas de Especialización','Programas de Dirección','Programas de Alta Especialización'],
+        frequencyItems: ['semanal', 'quincenal'],
         info: {
+          kindProgram: '',
           fullName: '',
           shortName: '',
           edition: '',
           description: '',
-          link: '',
+          link: 'https://',
           banner: '',
         },
         config: {
@@ -143,16 +149,8 @@
         }
         db.collection('courses').doc(this.idCourse).set(data)
         // Reseteando todo el formulario
-        this.info.fullName = ''
-        this.info.shortName = ''
-        this.info.edition = ''
-        this.info.description = ''
-        this.info.link = ''
-        this.info.banner = ''
-        
-        this.config.frequency= ''
-        this.config.numSessions= 0
-        this.config.dateStart= new Date().toISOString().substr(0, 10)
+
+        this.$refs.form.reset()
 
         this.loading = false
       }

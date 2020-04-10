@@ -37,10 +37,6 @@ export default new Vuex.Store({
       state.allCoursesData = payload
     },
 
-    // setCourseInfo(state, payload) {
-    //   state.courseInfo = payload
-    // },
-
     setSessionsCourse(state, payload) {
       state.sessionsCourse = payload
     },
@@ -101,7 +97,7 @@ export default new Vuex.Store({
       auth.signInWithEmailAndPassword(payload.email, payload.password)
         .then(function () {
           commit('setLoading', false)
-          router.push('/in')
+          router.push('/')
         })
         .catch((error) => {
           commit('setLoading', false)

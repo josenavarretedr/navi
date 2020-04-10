@@ -34,8 +34,7 @@ const routes = [{
     children: [{
         name: 'courses',
         path: '',
-        component: Home
-        // TODO demorar el mejor el home para que se vea más vistoso
+        component: () => import('../components/Campus/Courses.vue')
       },
       {
         path: 'profile',

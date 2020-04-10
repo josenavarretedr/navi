@@ -27,7 +27,7 @@
     <v-app-bar app color="primary" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="hidden-md-and-up"></v-app-bar-nav-icon>
       <v-toolbar-title class="ml-6">
-        <router-link to="/" tag="span" style="cursor: pointer">Navi</router-link>
+        <router-link id="navi" to="/" tag="span" style="cursor: pointer">Campus <span style="font-weight: bold">Navi</span></router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
 
@@ -49,8 +49,8 @@
       <router-view></router-view>
     </v-content>
 
-    <v-footer app color="blue-grey" class="white--text">
-      <span>Navi &copy; </span>
+    <v-footer app id="footer" class="grey--text ">
+      <span>Rinsa &copy; </span>
       <v-spacer />
       <span>2020</span>
     </v-footer>
@@ -58,6 +58,7 @@
 </template>
 
 <script>
+
   import {
     auth
   } from '../src/firebaseInit'
@@ -87,12 +88,12 @@
       },
       navItems() {
         let navItems = [{
-            title: 'Login',
+            title: 'Iniciar sesión',
             icon: 'login',
             link: '/login'
           },
           {
-            title: 'Register',
+            title: 'Registro',
             icon: 'account-plus',
             link: '/register'
           }
@@ -168,3 +169,8 @@
     }
   };
 </script>
+
+
+<style lang="scss" scoped>
+
+</style>
