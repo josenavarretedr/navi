@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import {auth} from '@/firebaseInit'
+import {
+  auth
+} from '@/firebaseInit'
 
 
 // Views
@@ -75,6 +77,19 @@ const routes = [{
     ]
   },
   {
+    path: '/courses',
+    name: 'allCourses',
+    component: Home,
+    meta: {
+      guest: true
+    },
+  },
+  {
+    path: '/courses/:id',
+    name: 'landing',
+    component: () => import('../components/Landing/Landing.vue'),
+  },
+  {
     path: '/login',
     name: 'Login',
     component: Login,
@@ -102,26 +117,26 @@ const routes = [{
     path: '/sessions',
     name: 'sessions',
     component: () => import('../components/Admin/Sessions.vue'),
-    meta : {
+    meta: {
       auth: true
     },
-    children:[{
-      path: '',
-      name: 'sessionDefault',
-      component: ()=>import('../components/Admin/SessionsDefault.vue')
-    },
-    {
-      path:'/sessions/:id',
-      name: 'sessionsCourse',
-      component: () => import('../components/Admin/SessionsCourse.vue')
-    }
-  ]
+    children: [{
+        path: '',
+        name: 'sessionDefault',
+        component: () => import('../components/Admin/SessionsDefault.vue')
+      },
+      {
+        path: '/sessions/:id',
+        name: 'sessionsCourse',
+        component: () => import('../components/Admin/SessionsCourse.vue')
+      }
+    ]
   },
   {
     path: '/enroll',
     name: 'enroll',
     component: () => import('../components/Admin/Enroll.vue'),
-    meta : {
+    meta: {
       auth: true
     }
   },
@@ -129,7 +144,7 @@ const routes = [{
     path: '/check',
     name: 'check',
     component: () => import('../components/Admin/Check.vue'),
-    meta : {
+    meta: {
       auth: true
     }
   },

@@ -29,7 +29,7 @@
         <v-btn v-if='routeCheck' color="primary" small outlined :to="'/in/'+course">
           Entrar
         </v-btn>
-        <v-btn v-else color="primary" small outlined :href="courseInfo.link" target="_blank">
+        <v-btn v-else color="primary" small outlined :to="'/courses/'+course">
           Saber más
         </v-btn>
       </v-card-actions>
@@ -48,16 +48,6 @@
       ...mapGetters(['getOneCourse']),
       courseInfo() {
         let a = this.getOneCourse(this.course)[0].info
-        // let a = {
-        //   fullName: 'Liderazgo Estratégico para el Desarrollo',
-        //   kindProgram: 'Programa de Alta Especialización',
-        //   id: 'LIDES12',
-        //   shortName: 'LIDES',
-        //   edition: 12,
-        //   banner: 'https://cdn.vuetifyjs.com/images/cards/house.jpg',
-        //   description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nulla, nesciunt!',
-        //   link: 'https://www.google.com/',
-        // }
         return a
       }
     }
