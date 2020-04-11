@@ -157,6 +157,7 @@ export default new Vuex.Store({
           'profile.adress': payload.adress
         }).then(function () {
           dispatch('getUserInfo', getters.userID)
+          router.push('/in/cursos')
           commit('setLoading', false)
         })
     },
