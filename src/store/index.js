@@ -110,6 +110,7 @@ export default new Vuex.Store({
     }) {
       auth.signOut().then(function () {
         commit('setUser', null)
+        commit('setUserUID',null)
       })
     },
 
@@ -234,6 +235,10 @@ export default new Vuex.Store({
           return state.user.courses.includes(course)
         }
       })
+    },
+
+    getCoursesRequest(state){
+      return state.user.coursesRequest
     },
     
     getOneCourse: (state) => (id) => {

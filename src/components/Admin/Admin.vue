@@ -1,26 +1,26 @@
 <template>
   <v-container>
-    <v-row style="border: 1px red solid">
+    <v-row>
       <v-col cols="10" offset="1">
         <p class="headline">Completa los datos del curso a crear</p>
         <p class="text-justify">A continuación se te pedirá información sobre el curso que se va a crear, toma en cuenta
           que una modificación tendrás que llamar al soporte y a jose no le gusta esto >:V </p>
       </v-col>
-      
+
       <v-col cols="10" offset="1">
         <v-card class="px-3 py-4">
           <v-form v-model="valid" class="mt-0" ref="form">
             <v-container>
               <v-row>
                 <v-col cols="12">
-                  <p class="subtitle-2">
+                  <p class="headline">
                     Información básica
                   </p>
                 </v-col>
-                <v-col class="d-flex" cols="12" md="4">
+                <v-col class="d-flex" cols="12" md="6">
                   <v-select :items="kindProgramItems" label="Tipo de Programa" v-model="info.kindProgram"></v-select>
                 </v-col>
-                <v-col cols="12" md="4">
+                <v-col cols="12" md="6">
                   <v-text-field v-model="info.fullName" label="Nombre Completo" required>
                   </v-text-field>
                 </v-col>
@@ -35,26 +35,51 @@
                   </v-text-field>
                 </v-col>
 
+                <!-- TODO hacer que el banner sea una imagen puesta, hacer un select files-->
                 <v-col cols="6">
                   <v-text-field v-model="info.banner" label="Link del banner" required>
                   </v-text-field>
                 </v-col>
 
-                <v-col cols="6">
+                <!-- <v-col cols="6">
                   <v-text-field v-model="info.link" label="Link para más info" required>
                   </v-text-field>
-                </v-col>
+                </v-col> -->
 
-                <v-col cols="12" md="6">
+                <v-col cols="12" md="12">
                   <!-- TODO crear regla para 120 carácteres -->
                   <v-text-field v-model="info.description" label="Descripción" required counter>
                   </v-text-field>
+                </v-col>
+
+                <v-col cols="12">
+                  <p class="subtitle-1">Sobre los participantes</p>
+
+
+                  <v-row>
+                    <v-col cols="12" sm="10">
+                      <v-text-field label="Agrega un item al listado" v-model="participantsDescription"></v-text-field>
+                    </v-col>
+                    <v-col class="d-flex justify-center align-center">
+                      <v-btn small color="success" @click="addParticipantsDescription">
+                        <v-icon>mdi-circle-edit-outline</v-icon>
+                      </v-btn>
+                    </v-col>
+                  </v-row>
+                  <p style="font-size: .8rem; font-style: italic">Descripciones de los participantes</p>
+                  <ul>
+                    <li style="list-style: none" v-for="(item,index) in info.participantsDescriptionArray" :key="index">
+                      <v-btn x-small icon color="red" @click="deleteParticipantDescription(index)">
+                        <v-icon>mdi-delete</v-icon>
+                      </v-btn> {{ item }}
+                    </li>
+                  </ul>
                 </v-col>
               </v-row>
 
               <v-row>
                 <v-col cols="12">
-                  <p class="subtitle-2">
+                  <p class="headline">
                     Información de configuración
                   </p>
                 </v-col>
@@ -79,14 +104,135 @@
                   <v-text-field type="number" v-model="config.numSessions" label="# de sesiones" required>
                   </v-text-field>
                 </v-col>
+              </v-row>
 
+              <v-row>
+                <v-col cols="12">
+                  <p class="headline">Información académica</p>
+                </v-col>
+
+                <v-col>
+                  <v-select :items="teachers" multiple chips label="Profesores a cargo" v-model="academicInfo.teachers">
+                  </v-select>
+                </v-col>
+
+                <v-col cols="12">
+                  <p class="subtitle-1">Sobre la certificación</p>
+                  <v-row>
+                    <v-col cols="12" sm="4">
+                      <v-text-field label="Certificación" required v-model="academicInfo.certificade.name"></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="2">
+                      <v-text-field label="# horas" required v-model="academicInfo.certificade.hours"></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="4">
+                      <v-text-field label="Emite" required v-model="academicInfo.certificade.from"></v-text-field>
+                    </v-col>
+                    <!-- <v-col class="d-flex justify-center align-center">
+                      <v-btn small color="success" @click="addModule">
+                        <v-icon>mdi-circle-edit-outline</v-icon>
+                      </v-btn>
+                    </v-col> -->
+                  </v-row>
+                </v-col>
+
+                <!-- Configuración de los módulos -->
+                <v-col cols="12">
+                  <p class="subtitle-1">Sobre los módulos</p>
+                  <v-row>
+                    <v-col cols="12" sm="4">
+                      <v-text-field label="Nombre del módulos" v-model="moduleToAdd.name"></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6">
+                      <v-text-field label="Descripción del módulo" v-model="moduleToAdd.description"></v-text-field>
+                    </v-col>
+                    <v-col class="d-flex justify-center align-center">
+                      <v-btn small color="success" @click="addModule">
+                        <v-icon>mdi-circle-edit-outline</v-icon>
+                      </v-btn>
+                    </v-col>
+                  </v-row>
+                  <p style="font-size: .8rem; font-style: italic">
+                    Módulos agregados:
+                  </p>
+                  <v-simple-table>
+                    <template v-slot:default>
+                      <thead>
+                        <tr>
+                          <th class="text-left">#</th>
+                          <th class="text-left">Módulos</th>
+                          <th class="text-left">Descripción</th>
+                          <th class="text-right">Eliminar</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="(module,index) in academicInfo.modules" :key="index">
+                          <td>{{index+1}}</td>
+                          <td>{{ module.name }}</td>
+                          <td>{{ module.description }}</td>
+                          <td class="text-right">
+                            <v-btn icon color="deep-orange" @click="deleteModule(index)">
+                              <v-icon>mdi-delete</v-icon>
+                            </v-btn>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </template>
+                  </v-simple-table>
+                </v-col>
 
               </v-row>
 
-              <v-row class="d-flex">
+
+              <v-row class="mt-10">
                 <v-col cols="12">
-                  <v-btn color="primary" @click="saveCourse" :loading="loading" :disabled="loading">
-                    Guardar
+                  <p class="headline">
+                    Información de pago
+                  </p>
+                  <v-switch v-model="payInfo.courseFree" label="Es un curso gratis"></v-switch>
+                </v-col>
+
+                <v-row>
+                  <v-col class="d-flex justify-center align-center">
+                    <p>Precio sin beca</p>
+                  </v-col>
+                  <v-col>
+                    <v-text-field :disabled="!payInfo.courseFree" v-model="payInfo.cost.pe"
+                      label="Precio 🇵🇪 (S/)"></v-text-field>
+                  </v-col>
+                  <v-col>
+                    <v-text-field :disabled="!payInfo.courseFree" v-model="payInfo.cost.ec"
+                      label="Precio 🇪🇨 ($)"></v-text-field>
+                  </v-col>
+                  <v-col>
+                    <v-text-field :disabled="!payInfo.courseFree" v-model="payInfo.cost.rest"
+                      label="Otros países 🗺️ ($)"></v-text-field>
+                  </v-col>
+                </v-row>
+
+                <v-row>
+                  <v-col class="d-flex justify-center align-center">
+                    <p>Precio <b>CON</b> beca</p>
+                  </v-col>
+                  <v-col>
+                    <v-text-field :disabled="!payInfo.courseFree" v-model="payInfo.scholarship.pe"
+                      label="Precio 🇵🇪 (S/)"></v-text-field>
+                  </v-col>
+                  <v-col>
+                    <v-text-field :disabled="!payInfo.courseFree" v-model="payInfo.scholarship.ec"
+                      label="Precio 🇪🇨 ($)"></v-text-field>
+                  </v-col>
+                  <v-col>
+                    <v-text-field :disabled="!payInfo.courseFree" v-model="payInfo.scholarship.rest"
+                      label="Otros países 🗺️ ($)"></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-row>
+
+              <v-row class="d-flex mt-10">
+                <v-col cols="12">
+                  <v-btn color="primary" block @click="saveCourse" :loading="loading" :disabled="loading">
+                    crear nuevo curso
                     <template v-slot:loader>
                       <span class="custom-loader">
                         <v-icon light>mdi-cached</v-icon>
@@ -112,28 +258,82 @@
       return {
         valid: false,
         menu: false,
-        kindProgramItems: ['Curso','Seminarios','Programas de Especialización','Programas de Dirección','Programas de Alta Especialización'],
+        kindProgramItems: ['Curso', 'Seminarios', 'Programas de Especialización', 'Programas de Dirección',
+          'Programas de Alta Especialización'
+        ],
         frequencyItems: ['semanal', 'quincenal'],
+        teachers: ['a', 'b', 'c'],
+        moduleToAdd: [{
+          name: '',
+          description: ''
+        }],
         info: {
           kindProgram: '',
           fullName: '',
           shortName: '',
           edition: '',
           description: '',
-          link: 'https://',
           banner: '',
+          participantsDescriptionArray: []
         },
         config: {
           frequency: '',
           numSessions: 0,
-          dateStart: new Date().toISOString().substr(0, 10),
+          dateStart: new Date().toISOString().substr(0, 10)
+        },
+        academicInfo: {
+          teachers: [],
+          certificade: {
+            name: '',
+            hours: '',
+            from: '',
+          },
+          modules: []
+        },
+        payInfo: {
+          courseFree: true,
+          cost: {
+            pe: '',
+            ec: '',
+            rest: ''
+          },
+          scholarship: {
+            pe: '',
+            ec: '',
+            rest: ''
+          }
         },
         loading: false,
+        participantsDescription: '',
       }
     },
     computed: {
       idCourse() {
-        return this.info.shortName.toUpperCase().replace(' ','-')+ '-' + this.info.edition
+        var normalize = (function () {
+          var from = "ÃÀÁÄÂÈÉËÊÌÍÏÎÒÓÖÔÙÚÜÛãàáäâèéëêìíïîòóöôùúüûÑñÇç",
+            to = "AAAAAEEEEIIIIOOOOUUUUaaaaaeeeeiiiioooouuuunncc",
+            mapping = {};
+
+          for (var i = 0, j = from.length; i < j; i++)
+            mapping[from.charAt(i)] = to.charAt(i);
+
+          return function (str) {
+            var ret = [];
+            for (var i = 0, j = str.length; i < j; i++) {
+              var c = str.charAt(i);
+              // eslint-disable-next-line no-prototype-builtins
+              if (mapping.hasOwnProperty(str.charAt(i)))
+                ret.push(mapping[c]);
+              else
+                ret.push(c);
+            }
+            return ret.join('').replace(/[^-A-Za-z0-9]+/g, '-').toLowerCase();
+          }
+
+        })();
+        // return this.info.shortName.toLowerCase().replace(' ', '-') + '-' + this.info.edition
+        let a = this.info.shortName + ' ' + this.info.edition
+        return normalize(a)
       }
     },
     methods: {
@@ -145,14 +345,38 @@
         let data = {
           id: this.idCourse,
           info: this.info,
-          config: this.config
+          config: this.config,
+          academicInfo : this.academicInfo,
+          payInfo: this.payInfo
         }
         db.collection('courses').doc(this.idCourse).set(data)
         // Reseteando todo el formulario
-
         this.$refs.form.reset()
 
         this.loading = false
+      },
+      addModule() {
+        let a = {
+          name: '',
+          description: ''
+        }
+        a.name = this.moduleToAdd.name
+        a.description = this.moduleToAdd.description
+        this.academicInfo.modules.push(a)
+        this.moduleToAdd.name = '',
+        this.moduleToAdd.description = ''
+      },
+      deleteModule(index) {
+        this.academicInfo.modules.splice(index, 1)
+      },
+      addParticipantsDescription() {
+        let a = ''
+        a = this.participantsDescription
+        this.info.participantsDescriptionArray.push(a)
+        this.participantsDescription = ''
+      },
+      deleteParticipantDescription(index) {
+        this.info.participantsDescriptionArray.splice(index, 1)
       }
     },
 
@@ -160,5 +384,7 @@
 </script>
 
 <style lang="scss" scoped>
-
+  .borde {
+    border: solid 1px red;
+  }
 </style>
