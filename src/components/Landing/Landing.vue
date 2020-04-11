@@ -51,7 +51,7 @@
               <v-btn color="primary" block @click.stop="dialog = true">
                 Inscríbete
               </v-btn>
-              <v-dialog v-model="dialog" max-width="80%" v-if="course.payInfo.courseFree">
+              <v-dialog v-model="dialog" max-width="80%" v-if="!course.payInfo.courseFree">
                 <v-stepper v-model="e1">
                   <v-stepper-header>
                     <v-stepper-step :complete="e1 > 1" step="1">Pagar</v-stepper-step>
@@ -86,8 +86,10 @@
                         </v-card-title>
                         <v-card-text v-if="!userIsAuthenticated">
                           ¡Vaya! Vemos que no has iniciado sesión.
-                          Por favor <router-link class="link" to="/login" tag="span">inicia sesión</router-link> para poder registrarte. <br>
-                          Si no tienes una cuenta, crea una <router-link class="link" to="/register" tag="span">aquí</router-link>. Te estaremos esperando para que completes tu
+                          Por favor <router-link class="link" to="/login" tag="span">inicia sesión</router-link> para
+                          poder registrarte. <br>
+                          Si no tienes una cuenta, crea una <router-link class="link" to="/register" tag="span">aquí
+                          </router-link>. Te estaremos esperando para que completes tu
                           registro.
                         </v-card-text>
                         <div v-else>
@@ -254,7 +256,6 @@
           </v-row>
 
         </v-col>
-        {{course.payInfo.courseFree}}
         <v-col cols="12">
           <p class="headline" id="inversion">Inversion</p>
           <v-row v-if="course.payInfo.courseFree">
@@ -263,13 +264,13 @@
               <v-icon style="font-size: 4rem;">mdi-cash-remove</v-icon>
             </v-col>
 
-            <v-col cols="9" sm="7" md="5"  class=" d-flex align-center">
+            <v-col cols="9" sm="7" md="5" class=" d-flex align-center">
               <p class="font-weight-light">
                 ¡No tiene costo!
               </p>
             </v-col>
           </v-row>
-          
+
           <v-row v-else>
             <!-- <v-col cols="6">
                   <p class="text-center">Certificación 
@@ -290,7 +291,7 @@
               </p>
             </v-col>
 
-            <v-col cols="12" sm="4">
+            <v-col cols="12" sm="6" md="3">
               <p class="text-center title">Beca Rinsa
               </p>
               <p class="font-weight-light text-justify">
@@ -299,7 +300,7 @@
               </p>
             </v-col>
 
-            <v-col cols="6">
+            <v-col cols="6" sm="6" md="3">
               <p class="text-center">Perú 🇵🇪
               </p>
               <p style="font-size: 2rem" class="font-weight-light text-center">
@@ -307,7 +308,7 @@
               </p>
             </v-col>
 
-            <v-col cols="6">
+            <v-col cols="6" sm="6" md="3">
               <p class="text-center">Ecuador 🇪🇨
               </p>
               <p style="font-size: 2rem" class="font-weight-light text-center">
@@ -315,7 +316,7 @@
               </p>
             </v-col>
 
-            <v-col cols="12">
+            <v-col cols="12" sm="6" md="3">
               <p class="text-center">Otros países 🗺️
               </p>
               <p style="font-size: 2rem" class="font-weight-light text-center">
@@ -323,15 +324,15 @@
               </p>
             </v-col>
 
-            <v-col cols="4">
+            <v-col cols="12">
               <p class="notes font-weight-light">** Único pago. Incluye diploma al concluir el 100% de las sesiones
                 programas. Precio exclusivo con convenio con el Grupo Rinsa.
               </p>
             </v-col>
 
 
-            <v-col cols="12">
-              <v-col cols="6">
+            <v-col cols="12" md="4">
+              <v-col cols="12">
                 <p class="text-center title">Medios de pago
                 </p>
                 <p class="font-weight-light text-justify">
@@ -341,7 +342,7 @@
               </v-col>
             </v-col>
 
-            <v-col cols="12" md="6">
+            <v-col cols="6" md="4">
               <p class="text-center">Perú 🇵🇪
               </p>
               <p class="font-weight-light text-center">
@@ -365,7 +366,7 @@
                 segura de Visa.</span>
             </v-col> -->
 
-            <v-col cols="12" md="6" class="text-center">
+            <v-col cols="6" md="4" class="text-center">
               <p>Otros países 🗺️
               </p>
               <p class="font-weight-light">
@@ -380,8 +381,9 @@
 
           </v-row>
         </v-col>
-        <v-btn v-scroll="onScroll" v-show="fab" fab dark fixed bottom right color="success" >
-          <v-icon target="_blank" src="https://wa.me/51978042801">mdi-whatsapp</v-icon>
+        <v-btn v-scroll="onScroll" v-show="fab" fab dark fixed bottom right target="_blank" color="success"
+          :href="'https://wa.me/51978042801/?text='+linkToWsp">
+          <v-icon>mdi-whatsapp</v-icon>
         </v-btn>
       </v-row>
     </v-container>
@@ -394,7 +396,8 @@
   } from 'vuex'
 
   import {
-    db, auth
+    db,
+    auth
   } from '@/firebaseInit.js'
 
   export default {
@@ -446,13 +449,16 @@
           return true
         }
       },
-      linkToWsp(){
-        let a= {
-          fullName: this.course.info.fullName.split(' ').join('%20'),
-          kindProgram: this.course.info.kindProgram.split(' ').join('%20')
-        }
-        return a
-        
+      linkToWsp() {
+        // let a= {
+        //   fullName: this.course.info.fullName.split(' ').join('%20'),
+        //   kindProgram: this.course.info.kindProgram.split(' ').join('%20')
+        // }
+        let b = 'Me interesa el ' + this.course.info.kindProgram.split(' ').join('%20') + ' *' + this.course.info
+          .fullName.split(' ').join('%20') + '*. Quisiera más información'
+
+        return b.split(' ').join('%20')
+
       }
     },
     methods: {
@@ -476,7 +482,13 @@
           that.updateLoading = false
           that.updateEnd = true
           that.updateMessage = 'Ya estás registrado en este curso.'
-        } else {
+        }
+        // else if (this.user.coursesRequest.includes(courseToRegister) == true) {
+        //   that.updateLoading = false
+        //   that.updateEnd = true
+        //   that.updateMessage = 'Ya enviaste enviaste una solicitud para este curso'
+        // } 
+        else {
           let a = {
             courseid: '',
             status: 'revisando',
@@ -487,7 +499,7 @@
           a.courseid = courseToRegister
 
           b.push(a)
-          
+
           db.collection('users').doc(this.userID).update({
             coursesRequest: b
           }).then(function () {
@@ -496,9 +508,10 @@
             that.updateMessage = 'Su solicitud se ha enviado con éxito'
           });
         }
+
       }
     },
-    mounted () {
+    mounted() {
       auth.onAuthStateChanged(userAuth => {
         if (userAuth) {
           return this.userIsAuthenticated = true
@@ -528,7 +541,7 @@
     ;
   }
 
-  .borde{
+  .borde {
     border: solid 1px red;
   }
 
