@@ -381,11 +381,6 @@
 
           </v-row>
         </v-col>
-        <v-col cols="12" class="my-10">
-          <v-btn color="primary" block @click.stop="dialog = true">
-            Inscríbete
-          </v-btn>
-        </v-col>
         <v-btn v-scroll="onScroll" v-show="fab" fab dark fixed bottom right target="_blank" color="success"
           :href="'https://wa.me/51978042801/?text='+linkToWsp">
           <v-icon>mdi-whatsapp</v-icon>

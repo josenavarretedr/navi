@@ -21,6 +21,7 @@
                 <th class="text-left">#</th>
                 <th class="text-left">Curso</th>
                 <th class="text-left">Estado</th>
+                <th class="text-right">Comentario</th>
               </tr>
             </thead>
             <tbody>
@@ -28,7 +29,7 @@
                 <td>{{ index+1 }}</td>
                 <td>{{ item.courseName }}</td>
                 <td>{{ item.status.toLowerCase() }}</td>
-                <!-- <td>{{ item.comment }}</td> -->
+                <td>{{ item.comment }}</td>
               </tr>
             </tbody>
           </template>

@@ -8,7 +8,6 @@ import {
 // Views
 
 import Home from '../views/Home.vue'
-// import CoursesEnrolled from '../views/CoursesEnrolled.vue'
 import Profile from '../views/Profile.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
@@ -135,10 +134,26 @@ const routes = [{
   {
     path: '/enroll',
     name: 'enroll',
-    component: () => import('../components/Admin/Enroll.vue'),
+    component: () => import('../components/Admin/Enroll/Enroll.vue'),
     meta: {
       auth: true
+    },
+    children: [{
+      path: '/enroll/request',
+      name: 'enrollRequests',
+      component: () => import ('../components/Admin/Enroll/EnrollRequests.vue')
+    },
+    {
+      path:'/enroll/one',
+      name: 'enrollOne',
+      component: () => import('../components/Admin/Enroll/EnrollOne.vue')
+    },
+    {
+      path: '/enroll/delete',
+      name: 'unEnroll',
+      component: () => import( '../components/Admin/Enroll/UnEnroll.vue')
     }
+  ]
   },
   {
     path: '/check',

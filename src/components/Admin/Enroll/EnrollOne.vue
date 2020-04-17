@@ -1,5 +1,5 @@
 <template>
-  <v-row class="d-flex justify-space-around">
+  <v-row>
     <v-col cols="10" class="mt-4">
       <p class="font-weight-light mx-3 title">Selecciona el curso que desea matricular</p>
     </v-col>
@@ -48,7 +48,6 @@ import { mapGetters } from 'vuex'
     data() {
       return {
         allStudents: [],
-        courseSelected: '',
         updateEnd: false
       }
     },
