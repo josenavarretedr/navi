@@ -44,22 +44,23 @@
 
                 <!-- TODO hacer que el banner sea una imagen puesta, hacer un select files-->
                 <v-col cols="12">
-                  <v-row>
+                  <!-- <v-row>
                     <v-col cols="6">
                       <v-text-field v-model="info.banner" label="Link del banner" required>
                       </v-text-field>
                     </v-col>
-                  </v-row>
+                  </v-row> -->
                   <v-row>
                     <v-col cols="9" class="m0">
                       <v-file-input v-model="file" chips id="myFile" label="Seleccionar archivos"></v-file-input>
                     </v-col>
                     <v-col cols="3" class="d-flex justify-center align-center">
-                      <v-btn :disabled="file.length == 0" color="success" @click="upload" accept="image/*">cargar banner</v-btn>
+                      <v-btn :disabled="file.length == 0" color="success" @click="upload" accept="image/*">cargar banner
+                      </v-btn>
                     </v-col>
                     <v-col class="m0 p0">
-                      <p class="caption">NOTAsss: Si ya has enviado un documento, el boton "ENVIAR" lo reemplazará el que
-                        has selecionado. --- {{bannerName}}
+                      <p class="caption">NOTA: Si ya has cargado una imagen, el boton "ENVIAR" lo reemplazará el que
+                        has selecionado.
                       </p>
                     </v-col>
                     <v-col cols="12">
@@ -67,20 +68,16 @@
                         v-if="!uploadEnd">
                       </v-progress-linear>
                     </v-col>
-                  </v-row>
+                    <v-col v-if="downloadURL.length !== 0" class="d-flex justify-center align-center">
+                      <v-img height="250" :src="downloadURL" contain>
+                        <v-btn icon x-large color="red" @click="deleteFile">
+                          <v-icon>mdi-delete</v-icon>
+                        </v-btn>
+                      </v-img>
 
-                  <v-row id="documentUpdate" v-if="uploadEnd">
-                    <v-col class="d-flex">
-                      <p class="detailsDocument">
-                        <v-icon class="iconDocument">mdi-file</v-icon>
-                        <a :href="dowloadUrl">{{fileName}}</a>
-                      </p>
-                      <v-btn large icon color="error" @click="deleteFile">
-                        <v-icon>mdi-delete</v-icon>
-                      </v-btn>
                     </v-col>
-                  </v-row>
 
+                  </v-row>
                 </v-col>
 
 
@@ -223,6 +220,55 @@
 
               </v-row>
 
+              <!-- <v-row>
+                <v-col cols="12">
+                  <p class="headline">Programa personalizado</p>
+                  <v-switch label="Es un programa para terceros (empresa)" v-model="b2b.check"></v-switch>
+                </v-col>
+                <v-col cols="12">
+                  <v-text-field label="Nombre dela empresa" required v-model="b2b.name">
+                  </v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <p class="subtitle-1">Persona de contacto</p>
+                </v-col>
+                <v-col cols="5">
+                  <v-text-field label="Nombre y Apellidos completos" v-model="b2b.contact.name"></v-text-field>
+                </v-col>
+                <v-col cols="4">
+                  <v-text-field label="Correo electrónico" v-model="b2b.contact.email"></v-text-field>
+                </v-col>
+                <v-col cols="3">
+                  <v-text-field label="Número de teléfono" v-model="b2b.contact.phone"></v-text-field>
+                </v-col>
+
+                <v-row>
+                  <v-col cols="9" class="m0">
+                    <v-file-input v-model="file" chips id="myFile" label="Seleccionar archivos"></v-file-input>
+                  </v-col>
+                  <v-col cols="3" class="d-flex justify-center align-center">
+                    <v-btn :disabled="file.length == 0" color="success" @click="upload" accept="image/*">cargar banner
+                    </v-btn>
+                  </v-col>
+                  <v-col class="m0 p0">
+                    <p class="caption">NOTA: Si ya has cargado una imagen, el boton "ENVIAR" lo reemplazará el que
+                      has selecionado.
+                    </p>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-progress-linear v-model="progressUpload" background-color="none" color="primary"
+                      v-if="!uploadEnd">
+                    </v-progress-linear>
+                  </v-col>
+                  <v-col v-if="downloadURL.length !== 0" class="d-flex justify-center align-center">
+                    <v-img height="250" :src="downloadURL" contain>
+                      <v-btn icon x-large color="red" @click="deleteFile">
+                        <v-icon>mdi-delete</v-icon>
+                      </v-btn>
+                    </v-img>
+                  </v-col>
+                </v-row>
+              </v-row> -->
 
               <v-row class="mt-10">
                 <v-col cols="12">
@@ -291,20 +337,23 @@
 
 <script>
   import {
-    db, storage
+    db,
+    storage
   } from '@/firebaseInit.js'
   export default {
     data() {
       return {
         // START setup to banner update
         file: [],
-        dowloadUrl: '',
+        downloadURL: '',
         fileName: '',
         filePath: '',
         uploadTask: '',
         progressUpload: 0,
         uploading: false,
         uploadEnd: false,
+
+        // SETUP to banner updates
 
 
         // END setup to banner update
@@ -356,6 +405,16 @@
             rest: ''
           }
         },
+        b2b: {
+          check: false,
+          name: '',
+          logoURL: '',
+          contact: {
+            name: '',
+            email: '',
+            phone: '',
+          }
+        },
         loading: false,
         participantsDescription: '',
       }
@@ -388,10 +447,10 @@
         let a = this.info.shortName + ' ' + this.info.edition
         return normalize(a)
       },
-      bannerName(){
-        let indice = this.file.name.indexOf('.')
-        return 'banner'+this.file.name.substring(indice)
-      }
+      // bannerName(){
+      //   let indice = this.file.name.indexOf('.')
+      //   return 'banner'+this.file.name.substring(indice)
+      // }
     },
     methods: {
       save(date) {
@@ -435,15 +494,15 @@
       deleteParticipantDescription(index) {
         this.info.participantsDescriptionArray.splice(index, 1)
       },
-      upload(){
+      upload() {
         this.fileName = this.file.name
-        this.uploadTask = storage.ref(`course/${this.idCourse}/`).put(this.file)
+        this.uploadTask = storage.ref(`course/${this.idCourse}/${this.fileName}`).put(this.file)
         this.uploading = true
         this.uploadEnd = false
       },
       deleteFile() {
-        storage.ref(`reception/${this.fileName}`).delete()
-        this.uploadEnd = false        
+        storage.ref(`course/${this.idCourse}/${this.fileName}`).delete()
+        this.downloadURL = ''
       }
     },
     watch: {
@@ -456,7 +515,7 @@
             this.uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
               this.file = []
               this.uploadEnd = true
-              this.dowloadUrl = downloadURL
+              this.downloadURL = downloadURL
             })
           })
       }

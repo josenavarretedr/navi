@@ -1,9 +1,12 @@
 <template>
   <v-container>
-    <v-row class="d-flex justify-space-around">
-      <v-col cols="10" class="titleCourse">
+    <v-row class="mt-10 d-flex justify-space-around">
+      <v-col cols="8" class="titleCourse">
         <h1>{{courseInfo.fullName}}</h1>
         <h2>{{courseInfo.shortName}} - Ed. {{courseInfo.edition}} </h2>
+      </v-col>
+      <v-col cols="4">
+        <v-img v-if="courseB2b.check" height="70" :src="courseB2b.logoURL" contain></v-img>
       </v-col>
     </v-row>
     <v-row class="d-flex justify-space-around">
@@ -47,7 +50,10 @@
       ...mapGetters(['getOneCourse']),
       courseInfo() {
         return this.getOneCourse(this.$route.params.id)[0].info
-      }
+      },
+      courseB2b(){
+        return this.getOneCourse(this.$route.params.id)[0].b2b
+      }      
     },
 
   }
@@ -64,5 +70,8 @@
       font-weight: 300;
       font-size: .9rem;
     }
+  }
+  .borde {
+    border: solid 1px red
   }
 </style>
