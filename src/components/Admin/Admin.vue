@@ -503,6 +503,7 @@
       deleteFile() {
         storage.ref(`course/${this.idCourse}/${this.fileName}`).delete()
         this.downloadURL = ''
+        this.info.banner = ''
       }
     },
     watch: {
@@ -516,6 +517,7 @@
               this.file = []
               this.uploadEnd = true
               this.downloadURL = downloadURL
+              this.info.banner = downloadURL
             })
           })
       }
