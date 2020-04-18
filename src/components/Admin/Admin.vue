@@ -7,7 +7,7 @@
           que una modificación tendrás que llamar al soporte y a jose no le gusta esto >:V </p>
       </v-col>
 
-      <v-col cols="10" offset="1">
+      <v-col>
         <v-card class="px-3 py-4">
           <v-form v-model="valid" class="mt-0" ref="form">
             <v-container>
@@ -17,15 +17,15 @@
                     Información básica
                   </p>
                 </v-col>
-                <v-col class="d-flex" cols="12" md="6">
+                <v-col class="d-flex" cols="12" md="3">
                   <v-select :items="kindProgramItems" label="Tipo de Programa" v-model="info.kindProgram"></v-select>
                 </v-col>
-                <v-col cols="12" md="6">
+                <v-col cols="12" md="4">
                   <v-text-field v-model="info.fullName" label="Nombre Completo" required>
                   </v-text-field>
                 </v-col>
 
-                <v-col cols="12" md="4">
+                <v-col cols="12" md="3">
                   <v-text-field v-model="info.shortName" label="Nombre corto" required>
                   </v-text-field>
                 </v-col>
@@ -35,22 +35,58 @@
                   </v-text-field>
                 </v-col>
 
-                <!-- TODO hacer que el banner sea una imagen puesta, hacer un select files-->
-                <v-col cols="6">
-                  <v-text-field v-model="info.banner" label="Link del banner" required>
+                <v-col cols="12" md="12">
+                  <!-- TODO crear regla para 120 carácteres -->
+                  <v-text-field v-model="info.description" label="Descripción" required :rules="descriptionRules"
+                    counter>
                   </v-text-field>
                 </v-col>
+
+                <!-- TODO hacer que el banner sea una imagen puesta, hacer un select files-->
+                <v-col cols="12">
+                  <!-- <v-row>
+                    <v-col cols="6">
+                      <v-text-field v-model="info.banner" label="Link del banner" required>
+                      </v-text-field>
+                    </v-col>
+                  </v-row> -->
+                  <v-row>
+                    <v-col cols="9" class="m0">
+                      <v-file-input v-model="file" chips id="myFile" label="Seleccionar archivos"></v-file-input>
+                    </v-col>
+                    <v-col cols="3" class="d-flex justify-center align-center">
+                      <v-btn :disabled="file.length == 0" color="success" @click="upload" accept="image/*">cargar banner
+                      </v-btn>
+                    </v-col>
+                    <v-col class="m0 p0">
+                      <p class="caption">NOTA: Si ya has cargado una imagen, el boton "ENVIAR" lo reemplazará el que
+                        has selecionado.
+                      </p>
+                    </v-col>
+                    <v-col cols="12">
+                      <v-progress-linear v-model="progressUpload" background-color="none" color="primary"
+                        v-if="!uploadEnd">
+                      </v-progress-linear>
+                    </v-col>
+                    <v-col v-if="downloadURL.length !== 0" class="d-flex justify-center align-center">
+                      <v-img height="250" :src="downloadURL" contain>
+                        <v-btn icon x-large color="red" @click="deleteFile">
+                          <v-icon>mdi-delete</v-icon>
+                        </v-btn>
+                      </v-img>
+
+                    </v-col>
+
+                  </v-row>
+                </v-col>
+
+
+
 
                 <!-- <v-col cols="6">
                   <v-text-field v-model="info.link" label="Link para más info" required>
                   </v-text-field>
                 </v-col> -->
-
-                <v-col cols="12" md="12">
-                  <!-- TODO crear regla para 120 carácteres -->
-                  <v-text-field v-model="info.description" label="Descripción" required counter>
-                  </v-text-field>
-                </v-col>
 
                 <v-col cols="12">
                   <p class="subtitle-1">Sobre los participantes</p>
@@ -120,7 +156,8 @@
                   <p class="subtitle-1">Sobre la certificación</p>
                   <v-row>
                     <v-col cols="12" sm="4">
-                      <v-text-field label="Certificación" required v-model="academicInfo.certificade.name"></v-text-field>
+                      <v-text-field label="Certificación" required v-model="academicInfo.certificade.name">
+                      </v-text-field>
                     </v-col>
                     <v-col cols="12" sm="2">
                       <v-text-field label="# horas" required v-model="academicInfo.certificade.hours"></v-text-field>
@@ -183,6 +220,55 @@
 
               </v-row>
 
+              <!-- <v-row>
+                <v-col cols="12">
+                  <p class="headline">Programa personalizado</p>
+                  <v-switch label="Es un programa para terceros (empresa)" v-model="b2b.check"></v-switch>
+                </v-col>
+                <v-col cols="12">
+                  <v-text-field label="Nombre dela empresa" required v-model="b2b.name">
+                  </v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <p class="subtitle-1">Persona de contacto</p>
+                </v-col>
+                <v-col cols="5">
+                  <v-text-field label="Nombre y Apellidos completos" v-model="b2b.contact.name"></v-text-field>
+                </v-col>
+                <v-col cols="4">
+                  <v-text-field label="Correo electrónico" v-model="b2b.contact.email"></v-text-field>
+                </v-col>
+                <v-col cols="3">
+                  <v-text-field label="Número de teléfono" v-model="b2b.contact.phone"></v-text-field>
+                </v-col>
+
+                <v-row>
+                  <v-col cols="9" class="m0">
+                    <v-file-input v-model="file" chips id="myFile" label="Seleccionar archivos"></v-file-input>
+                  </v-col>
+                  <v-col cols="3" class="d-flex justify-center align-center">
+                    <v-btn :disabled="file.length == 0" color="success" @click="upload" accept="image/*">cargar banner
+                    </v-btn>
+                  </v-col>
+                  <v-col class="m0 p0">
+                    <p class="caption">NOTA: Si ya has cargado una imagen, el boton "ENVIAR" lo reemplazará el que
+                      has selecionado.
+                    </p>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-progress-linear v-model="progressUpload" background-color="none" color="primary"
+                      v-if="!uploadEnd">
+                    </v-progress-linear>
+                  </v-col>
+                  <v-col v-if="downloadURL.length !== 0" class="d-flex justify-center align-center">
+                    <v-img height="250" :src="downloadURL" contain>
+                      <v-btn icon x-large color="red" @click="deleteFile">
+                        <v-icon>mdi-delete</v-icon>
+                      </v-btn>
+                    </v-img>
+                  </v-col>
+                </v-row>
+              </v-row> -->
 
               <v-row class="mt-10">
                 <v-col cols="12">
@@ -197,12 +283,12 @@
                     <p>Precio sin beca</p>
                   </v-col>
                   <v-col>
-                    <v-text-field :disabled="!payInfo.courseFree" v-model="payInfo.cost.pe"
-                      label="Precio 🇵🇪 (S/)"></v-text-field>
+                    <v-text-field :disabled="!payInfo.courseFree" v-model="payInfo.cost.pe" label="Precio 🇵🇪 (S/)">
+                    </v-text-field>
                   </v-col>
                   <v-col>
-                    <v-text-field :disabled="!payInfo.courseFree" v-model="payInfo.cost.ec"
-                      label="Precio 🇪🇨 ($)"></v-text-field>
+                    <v-text-field :disabled="!payInfo.courseFree" v-model="payInfo.cost.ec" label="Precio 🇪🇨 ($)">
+                    </v-text-field>
                   </v-col>
                   <v-col>
                     <v-text-field :disabled="!payInfo.courseFree" v-model="payInfo.cost.rest"
@@ -251,15 +337,31 @@
 
 <script>
   import {
-    db
+    db,
+    storage
   } from '@/firebaseInit.js'
   export default {
     data() {
       return {
+        // START setup to banner update
+        file: [],
+        downloadURL: '',
+        fileName: '',
+        filePath: '',
+        uploadTask: '',
+        progressUpload: 0,
+        uploading: false,
+        uploadEnd: false,
+
+        // SETUP to banner updates
+
+
+        // END setup to banner update
+        descriptionRules: [v => v.length <= 120 || 'Máximo 200 caracteres'],
         valid: false,
         menu: false,
-        kindProgramItems: ['Curso', 'Seminarios', 'Programas de Especialización', 'Programas de Dirección',
-          'Programas de Alta Especialización'
+        kindProgramItems: ['Curso', 'Seminario', 'Programa de Especialización', 'Programa de Dirección',
+          'Programa de Alta Especialización'
         ],
         frequencyItems: ['semanal', 'quincenal'],
         teachers: ['a', 'b', 'c'],
@@ -303,6 +405,16 @@
             rest: ''
           }
         },
+        b2b: {
+          check: false,
+          name: '',
+          logoURL: '',
+          contact: {
+            name: '',
+            email: '',
+            phone: '',
+          }
+        },
         loading: false,
         participantsDescription: '',
       }
@@ -334,7 +446,11 @@
         // return this.info.shortName.toLowerCase().replace(' ', '-') + '-' + this.info.edition
         let a = this.info.shortName + ' ' + this.info.edition
         return normalize(a)
-      }
+      },
+      // bannerName(){
+      //   let indice = this.file.name.indexOf('.')
+      //   return 'banner'+this.file.name.substring(indice)
+      // }
     },
     methods: {
       save(date) {
@@ -346,7 +462,7 @@
           id: this.idCourse,
           info: this.info,
           config: this.config,
-          academicInfo : this.academicInfo,
+          academicInfo: this.academicInfo,
           payInfo: this.payInfo
         }
         db.collection('courses').doc(this.idCourse).set(data)
@@ -364,7 +480,7 @@
         a.description = this.moduleToAdd.description
         this.academicInfo.modules.push(a)
         this.moduleToAdd.name = '',
-        this.moduleToAdd.description = ''
+          this.moduleToAdd.description = ''
       },
       deleteModule(index) {
         this.academicInfo.modules.splice(index, 1)
@@ -377,9 +493,33 @@
       },
       deleteParticipantDescription(index) {
         this.info.participantsDescriptionArray.splice(index, 1)
+      },
+      upload() {
+        this.fileName = this.file.name
+        this.uploadTask = storage.ref(`course/${this.idCourse}/${this.fileName}`).put(this.file)
+        this.uploading = true
+        this.uploadEnd = false
+      },
+      deleteFile() {
+        storage.ref(`course/${this.idCourse}/${this.fileName}`).delete()
+        this.downloadURL = ''
       }
     },
-
+    watch: {
+      uploadTask: function () {
+        this.uploadTask.on('state_changed', sp => {
+            this.progressUpload = Math.floor(sp.bytesTransferred / sp.totalBytes * 100)
+          },
+          null,
+          () => {
+            this.uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
+              this.file = []
+              this.uploadEnd = true
+              this.downloadURL = downloadURL
+            })
+          })
+      }
+    }
   }
 </script>
 
