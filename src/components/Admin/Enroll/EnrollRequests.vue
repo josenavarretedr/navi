@@ -135,7 +135,7 @@
               courses: r.coursesEnroll
             })
             .then(function () {
-              console.log('Se aprobo la solicitsud')
+              // console.log('Se aprobo la solicitsud')
             })
 
           // Modificando el status de las requests
