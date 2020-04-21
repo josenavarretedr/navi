@@ -36,7 +36,6 @@
           <v-btn color="primary" small outlined :to="'/courses/'+course" class="mr-4">
             Saber más
           </v-btn>
-          {{  this.courseInfo.id  }}
         </v-row>
       </v-card-actions>
       <v-img v-if="courseInfo.b2b.check" height="70" :src="courseInfo.b2b.logoURL" contain>
@@ -244,10 +243,6 @@
           a.courseid = courseToRegister
 
           b.push(a)
-
-          b.forEach(course => {
-            console.log(course.courseid)
-          });
           db.collection('users').doc(this.userID).update({
             coursesRequest: b
           }).then(function () {

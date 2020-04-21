@@ -66,15 +66,20 @@
       ...mapGetters(['error', 'loading']),
       comparePasswords() {
         return this.password !== this.confirmPassword ? 'Contraseñas no coninciden' : true
+      },
+      checkEmail(){
+        return this.email.trim()
       }
     },
     methods: {
       ...mapActions(['signUserUp', 'signUserOut', 'clearError']),
       onSignUp() {
         let that = this
+        let a = this.email.trim()
+        let b = this.password.trim()
         that.signUserUp({
-          email: this.email,
-          password: this.password
+          email: a,
+          password: b
         })
         that.signUserOut()
       },

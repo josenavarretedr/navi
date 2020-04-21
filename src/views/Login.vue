@@ -60,9 +60,11 @@
     methods: {
       ...mapActions(['signUserIn', 'clearError']),
       signUserInCmp() {
+        let a = this.email.trim()
+        let b = this.password.trim()
         this.signUserIn({
-          email: this.email,
-          password: this.password
+          email: a,
+          password: b
         })
       },
       onDismissed() {
