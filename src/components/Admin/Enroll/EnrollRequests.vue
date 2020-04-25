@@ -7,7 +7,7 @@
       <v-col>
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
-            <v-btn color="success" dark v-on="on" @click="acceptRequest">APROBADO</v-btn>
+            <v-btn color="success" dark v-on="on" @click="changeRequests(1)">APROBADO</v-btn>
           </template>
           <span>Se aprueba solicitud</span>
         </v-tooltip>
@@ -16,7 +16,7 @@
       <v-col>
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
-            <v-btn color="error" dark v-on="on">Rechazado</v-btn>
+            <v-btn color="error" dark v-on="on" @click="changeRequests(2)">Rechazado</v-btn>
           </template>
           <span>Se rechaza la solicitud</span>
         </v-tooltip>
@@ -25,34 +25,48 @@
       <v-col>
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
-            <v-btn color="error" dark v-on="on">Falta de pago</v-btn>
+            <v-btn color="error" dark v-on="on" @click="changeRequests(3)">Falta de pago</v-btn>
           </template>
           <span>Se rechaza la solicitud por falta de pago.</span>
         </v-tooltip>
       </v-col>
 
+      <!-- <v-col>
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-btn color="error" dark v-on="on" @click="changeRequests(4)">perfil incompleto</v-btn>
+          </template>
+          <span>Se rechaza la solicitud por perfil incompleto.</span>
+        </v-tooltip>
+      </v-col> -->
     </v-row>
     <v-row class="mt-10">
       <v-col>
-        <v-data-table v-model="selected" :headers="headers" :items="allRequests" :search="search"
-          :single-select="singleSelect" item-key="userID" show-select class="elevation-1">
-          <template v-slot:top>
-            <v-row class="d-flex justify-space-around">
-              <v-col cols="5">
-                <v-switch v-model="singleSelect" label="1x1" class="pa-3"></v-switch>
-              </v-col>
-              <v-col cols="5">
-                <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details>
-                </v-text-field>
-              </v-col>
-            </v-row>
-          </template>
-        </v-data-table>
+        <v-skeleton-loader :loading="loadingData"
+          type="table">
+          <v-data-table v-model="selected" :headers="headers" :items="dataToShow" :search="search"
+            :single-select="singleSelect" item-key="idRequest" show-select class="elevation-1">
+            <template v-slot:top>
+              <v-row class="d-flex justify-space-around">
+                <v-col cols="5">
+                  <!-- <v-switch v-model="singleSelect" label="1x1" class="pa-3"></v-switch> -->
+                </v-col>
+                <v-col cols="5">
+                  <v-text-field v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details>
+                  </v-text-field>
+                </v-col>
+              </v-row>
+            </template>
+          </v-data-table>
+        </v-skeleton-loader>
       </v-col>
+      <v-snackbar v-model="snackbar" :timeout="timeout">
+        {{ textSnackbar }}
+        <v-btn color="blue" text @click="snackbar = false">
+          Cerrar
+        </v-btn>
+      </v-snackbar>
     </v-row>
-    <pre>
-      {{selected}}
-    </pre>
   </v-container>
 </template>
 
@@ -63,26 +77,44 @@
   export default {
     data() {
       return {
+        // Config Skeleton
+        loadingData: true,
+        // Config del snackbar
+        snackbar: false,
+        textSnackbar: 'My timeout is set to 2000.',
+        timeout: 4000,
         // Config de la tabla
         search: '',
         singleSelect: false,
         selected: [],
         headers: [{
-            text: 'Nombre',
+            text: 'Apellidos, Nombres',
             align: 'start',
-            sortable: false,
-            value: 'userName',
+            value: 'profile.fullName',
           },
           {
-            text: 'Apellidos',
-            value: 'userLastName'
+            text: 'Email',
+            align: 'start',
+            value: 'profile.userEmail'
+          },
+          {
+            text: 'DNI',
+            align: 'start',
+            value: 'profile.dni'
           },
           {
             text: 'Curso solicitado ',
-            value: 'courseid'
+            align: 'start',
+            value: 'courseId'
           },
+          // {
+          //   text: 'Estado',
+          //   align: 'start',
+          //   value: 'status'
+          // }
         ],
-        allRequests: [],
+        allData: [],
+        dataToUpdate: [],
         loading: false,
         endRequest: false,
         responseMsg: ''
@@ -96,55 +128,99 @@
         .get()
         .then(function (querySnapshot) {
           querySnapshot.forEach(function (doc) {
-            let requests = doc.data().coursesRequest
-            let data = {
-              indexRequests: 0,
-              userID: '',
-              userName: '',
-              userLastName: '',
-              userEmail: '',
-              courseid: '',
-              courseName: '',
-              status: '',
-              coursesEnroll: ''
-            }
-            data.userName = doc.data().profile.name
-            data.userLastName = doc.data().profile.lastName
-            data.userEmail = doc.data().email
-            data.userID = doc.id
-            data.coursesEnroll = doc.data().courses
-            if (Object.keys(requests).length != 0) {
-              requests.forEach((r, index) => {
-                data.indexRequests = index
-                data.courseid = r.courseid
-                data.courseName = r.courseName
-                data.status = r.status
-              })
-              that.allRequests.push(data)
-            }
+            let b = {}
+            let requests = doc.data().coursesRequests
+
+            b.requests = requests
+            b.courses = doc.data().courses
+            b.id = doc.id
+
+            that.dataToUpdate.push(b)
+
+
+            requests.forEach((req, index) => {
+              let data = {
+                idRequest: '',
+                userID: '',
+                profile: {}
+              }
+              data.profile.fullName = doc.data().profile.lastName + ', ' + doc.data().profile.name
+              data.profile.userEmail = doc.data().email
+              data.profile.dni = doc.data().profile.dni
+              data.userID = doc.id
+              data.idRequest = doc.id
+
+
+              data.idRequest += '-' + req.id
+              data.status = req.status
+              data.indexRq = index
+              data.courseId = req.id
+
+
+              that.allData.push(data)
+            })
           });
+          that.loadingData = false
         })
     },
+    computed: {
+      dataToShow() {
+        return this.allData.filter((req) => req.status == 0)
+      }
+    },
     methods: {
-      acceptRequest() {
+      changeRequests(num) {
         this.selected.forEach(r => {
-          // TODO registrar si es que ya está registrado en el curso.
-          r.coursesEnroll.push(r.courseid)
-          // Actualiza los cursos registrados
-          db.collection('users').doc(r.userID).update({
-              courses: r.coursesEnroll
+          let userToUpdate = this.dataToUpdate.filter((data) => data.id == r.userID)[0]
+          // Actualiza localmente el stado del request
+          userToUpdate.requests[r.indexRq].status = num
+
+          // Actualiza los cursos localmente
+          if (num == 1) {
+            if (userToUpdate.courses.includes(r.courseId) == false) {
+              userToUpdate.courses.push(r.courseId)
+              console.log(userToUpdate.courses)
+            }
+            this.textSnackbar = 'Se aprobó la solicitud y se matricularon en los cursos'
+          }
+
+          // Eliminar de la data que se muestra
+          for (var i = 0; i < this.allData.length; i++) {
+            if (this.allData[i].idRequest === r.idRequest) {
+              this.allData.splice(i, 1);
+            }
+          }
+          // Mandar actualización a BD - sólo el status
+
+
+          db.collection('users').doc(userToUpdate.id).update({
+              // Actualiza el estado de request
+              coursesRequests: userToUpdate.requests,
+              // Actualizar BD - courses
+              courses: userToUpdate.courses
+
             })
             .then(function () {
-              // console.log('Se aprobo la solicitsud')
+              console.log('Se Actualizó estatus del request')
             })
 
-          // Modificando el status de las requests
-
-          // db.collection('users').doc(r.userID).update({
-          //   courses: r.coursesEnroll
-          // })
-
         })
+        this.selected = []
+        this.snackbar = true
+        switch (num) {
+          case 1:
+            this.textSnackbar = 'Se aprobaron las solicitudes y se matricularon en los cursos'
+            break
+          case 2:
+            this.textSnackbar = 'Se rechazó la solitud'
+            break
+          case 3:
+            this.textSnackbar = 'Se rechazó la solitud por fata de pago'
+            break
+          case 4:
+            this.textSnackbar = 'Se rechazó la solitud por perfil incompleto'
+            break
+        }
       }
     },
   }

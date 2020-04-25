@@ -3,8 +3,8 @@
     <v-col cols="10" class="mt-4">
       <p class="font-weight-light mx-3 title">Selecciona el curso que desea matricular</p>
     </v-col>
-    <v-col cols="10">
-      <v-simple-table fixed-header height="300px">
+    <v-col>
+    <v-simple-table fixed-header>
         <template v-slot:default>
           <thead>
             <tr>
@@ -42,7 +42,10 @@
   import {
     db
   } from '@/firebaseInit.js'
-import { mapGetters } from 'vuex'
+  
+  import {
+    mapGetters
+  } from 'vuex'
 
   export default {
     data() {
@@ -91,7 +94,7 @@ import { mapGetters } from 'vuex'
           });
         }
       }
-    },
+    }
   }
 </script>
 

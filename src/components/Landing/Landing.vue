@@ -99,7 +99,7 @@
                             directamente desde la sección <b>"CURSOS"</b> de tu plataforma.
                           </v-card-text>
                           <v-card-actions>
-                            <v-btn color="primary" small outlined @click="courseRegister">
+                            <v-btn color="primary" small outlined :disabled="updateLoading" @click="courseRegister">
                               Registrar
                             </v-btn>
                             <v-spacer></v-spacer>
@@ -150,7 +150,7 @@
                             directamente desde la sección <b>"CURSOS"</b> de tu plataforma.
                           </v-card-text>
                           <v-card-actions>
-                            <v-btn color="primary" small outlined @click="courseRegister">
+                            <v-btn color="primary" small outlined :disabled="updateLoading" @click="courseRegister">
                               Registrar
                             </v-btn>
                             <v-spacer></v-spacer>
@@ -474,41 +474,48 @@
         this.updateEnd = false
         this.updateLoading = true
 
-        let b = this.user.coursesRequest
+        let b = this.user.coursesRequests
 
-        let courseToRegister = this.$route.params.id
+        let courseToRegister = this.courseInfo.id
         let that = this
+
+        let filter = {
+          id: courseToRegister,
+          status: 0
+        }
+
+        let solicitudesFiltradas = this.user.coursesRequests.filter(function (item) {
+          for (var key in filter) {
+            if (item[key] === undefined || item[key] != filter[key])
+              return false;
+          }
+          return true;
+        });
+
         if (this.user.courses.includes(courseToRegister) == true) {
           that.updateLoading = false
           that.updateEnd = true
           that.updateMessage = 'Ya estás registrado en este curso.'
-        }
-        // else if (this.user.coursesRequest.includes(courseToRegister) == true) {
-        //   that.updateLoading = false
-        //   that.updateEnd = true
-        //   that.updateMessage = 'Ya enviaste enviaste una solicitud para este curso'
-        // } 
-        else {
+        } else if (solicitudesFiltradas.length !== 0) {
+          that.updateLoading = false
+          that.updateEnd = true
+          that.updateMessage = 'Ya enviaste enviaste una solicitud para este curso'
+        } else {
           let a = {
-            courseid: '',
-            status: 'revisando',
-            kindProgram: that.course.info.kindProgram,
-            courseName: that.course.info.fullName,
-            comment: '',
+            id: '',
+            status: 0,
           }
-          a.courseid = courseToRegister
+          a.id = courseToRegister
 
           b.push(a)
-
           db.collection('users').doc(this.userID).update({
-            coursesRequest: b
+            coursesRequests: b
           }).then(function () {
             that.updateLoading = false
             that.updateEnd = true
             that.updateMessage = 'Su solicitud se ha enviado con éxito'
           });
         }
-
       }
     },
     mounted() {

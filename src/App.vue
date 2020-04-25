@@ -13,7 +13,7 @@
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item v-if="userIsAuthenticated" @click="signUserOut">
+        <v-list-item v-if="userIsAuthenticated" @click="signUserOutCmp">
           <v-list-item-icon>
             <v-icon>mdi-exit-to-app</v-icon>
           </v-list-item-icon>
@@ -36,7 +36,7 @@
           <v-icon>mdi-{{ item.icon }}</v-icon>
           {{item.title}}
         </v-btn>
-        <v-btn v-if="userIsAuthenticated" text @click="signUserOut">
+        <v-btn v-if="userIsAuthenticated" text @click="signUserOutCmp">
           <v-icon>mdi-exit-to-app</v-icon>
           Salir
         </v-btn>
@@ -162,9 +162,11 @@
 
     },
     methods: {
-      ...mapActions(['setAllCoursesID']),
-      signUserOut() {
-        auth.signOut().then(this.$router.push('/'))
+      ...mapActions(['setAllCoursesID','signUserOut']),
+      signUserOutCmp() {
+        this.signUserOut()
+        this.$router.push('/')
+        this.userIsAuthenticated = false
       }
     }
   };

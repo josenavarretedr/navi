@@ -240,6 +240,10 @@ export default new Vuex.Store({
     getCoursesRequest(state){
       return state.user.coursesRequest
     },
+
+    getCoursesRequests(state){
+      return state.user.coursesRequests
+    },
     
     getOneCourse: (state) => (id) => {
       return state.allCoursesData.filter((course) => {
