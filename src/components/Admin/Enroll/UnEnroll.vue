@@ -1,15 +1,15 @@
 <template>
   <div>
     Retirar del curso
-    <changeData></changeData>
+    <!-- <changeData></changeData> -->
   </div>
 </template>
 
 <script>
-import changeData from './ChangeData.vue'
+// import changeData from './ChangeData.vue'
   export default {
     components: {
-      changeData
+      // changeData
     }    
   }
 </script>

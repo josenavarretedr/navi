@@ -179,7 +179,6 @@
           if (num == 1) {
             if (userToUpdate.courses.includes(r.courseId) == false) {
               userToUpdate.courses.push(r.courseId)
-              console.log(userToUpdate.courses)
             }
             this.textSnackbar = 'Se aprobó la solicitud y se matricularon en los cursos'
           }
@@ -199,9 +198,6 @@
               // Actualizar BD - courses
               courses: userToUpdate.courses
 
-            })
-            .then(function () {
-              console.log('Se Actualizó estatus del request')
             })
 
         })
