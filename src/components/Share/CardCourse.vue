@@ -1,8 +1,7 @@
 <template>
-  <v-col cols="10" md="6" lg="4" max-height="100">
-    <v-sheet v-if="!courseInfo.info">
-      <v-skeleton-loader class="mx-auto" max-width="300" type="card"></v-skeleton-loader>
-    </v-sheet>
+  <v-col cols="10" md="6" lg="4">
+    <v-skeleton-loader v-if="loadingData" type="card">
+    </v-skeleton-loader>
     <v-card v-else>
       <v-img :src="courseInfo.info.banner" class="white--text align-end"
         gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)" height="200px">
@@ -46,6 +45,7 @@
         </template>
       </v-img>
     </v-card>
+
 
 
 
@@ -188,7 +188,7 @@
     props: ['course', 'routeCheck'],
     data() {
       return {
-        auth: true,
+        loadingData: true,
         dialog: false,
         e1: 1,
         updateLoading: false,
@@ -205,13 +205,15 @@
       }
     },
     mounted() {
-      auth.onAuthStateChanged(userAuth => {
+       auth.onAuthStateChanged(userAuth => {
         if (userAuth) {
-          return this.userIsAuthenticated = true
+          this.userIsAuthenticated = true
         } else {
-          return this.userIsAuthenticated = false
+          this.userIsAuthenticated = false
         }
+        this.loadingData = false
       });
+
     },
     methods: {
       courseRegister() {
@@ -228,7 +230,7 @@
           status: 0
         }
 
-        let  solicitudesFiltradas = this.user.coursesRequests.filter(function (item) {
+        let solicitudesFiltradas = this.user.coursesRequests.filter(function (item) {
           for (var key in filter) {
             if (item[key] === undefined || item[key] != filter[key])
               return false;

@@ -11,7 +11,9 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex'
+  import {
+    mapGetters
+  } from 'vuex'
 
   import CardCourse from '../components/Share/CardCourse.vue'
   export default {
@@ -20,9 +22,9 @@
     },
     computed: {
       ...mapGetters(['allCoursesID']),
-      routeCheck(){
+      routeCheck() {
         let route = this.$route.path
-        if(route.indexOf('in') !== -1){
+        if (route.indexOf('in') !== -1) {
           return true
         } else {
           return false

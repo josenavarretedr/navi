@@ -1,15 +1,15 @@
 <template>
   <div>
     Retirar del curso
-    <!-- <changeData></changeData> -->
+    <AllUsersTable></AllUsersTable>
   </div>
 </template>
 
 <script>
-// import changeData from './ChangeData.vue'
+import AllUsersTable from '../UserManagment/AllUsersTable'
   export default {
     components: {
-      // changeData
+      AllUsersTable
     }    
   }
 </script>

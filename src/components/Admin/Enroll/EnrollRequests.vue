@@ -128,16 +128,14 @@
         .get()
         .then(function (querySnapshot) {
           querySnapshot.forEach(function (doc) {
-            let b = {}
             let requests = doc.data().coursesRequests
+            let b = {}
 
             b.requests = requests
             b.courses = doc.data().courses
             b.id = doc.id
 
             that.dataToUpdate.push(b)
-
-
             requests.forEach((req, index) => {
               let data = {
                 idRequest: '',
@@ -156,7 +154,6 @@
               data.indexRq = index
               data.courseId = req.id
 
-
               that.allData.push(data)
             })
           });
@@ -170,6 +167,7 @@
     },
     methods: {
       changeRequests(num) {
+        console.log(num)
         this.selected.forEach(r => {
           let userToUpdate = this.dataToUpdate.filter((data) => data.id == r.userID)[0]
           // Actualiza localmente el stado del request
