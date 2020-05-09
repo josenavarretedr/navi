@@ -2,32 +2,67 @@
   <v-container>
     <v-row class="d-flex justify-center">
       <v-col cols="12">
-        <p class="title">Revisar las tareas pendientes</p>
+        <p class="title">Lista de todos los participantes:</p>
       </v-col>
-    </v-row>
-    <v-row class="d-flex justify-space-around">
-      <v-col cols="10" sm="6" class="d-flex justify-space-around">
-        <v-select :items="allCoursesID" label="Selecciona un curso" v-model="courseSelected"></v-select>
+      <!-- <v-col>
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-btn color="success" dark v-on="on" @click="changeRequests(1)">APROBADO</v-btn>
+          </template>
+          <span>Se aprueba solicitud</span>
+        </v-tooltip>
       </v-col>
-      <v-btn small @click="getSessionBTN">Cargar sesiones</v-btn>
+
+      <v-col>
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-btn color="error" dark v-on="on" @click="changeRequests(2)">Rechazado</v-btn>
+          </template>
+          <span>Se rechaza la solicitud</span>
+        </v-tooltip>
+      </v-col>
+
+      <v-col>
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-btn color="error" dark v-on="on" @click="changeRequests(3)">Falta de pago</v-btn>
+          </template>
+          <span>Se rechaza la solicitud por falta de pago.</span>
+        </v-tooltip>
+      </v-col> -->
     </v-row>
     <v-row class="mt-10">
       <v-col>
         <v-skeleton-loader :loading="loadingData" type="table">
-          <v-data-table :headers="headers" :items="usersToShow" :search="search" item-key="id">
+          <v-data-table :headers="headers" :items="allData" :search="search"
+            item-key="id">
             <template v-slot:top>
               <v-row class="d-flex justify-space-around">
+                <v-col cols="5">
+                  <!-- <v-switch v-model="singleSelect" label="1x1" class="pa-3"></v-switch> -->
+                </v-col>
                 <v-col cols="5">
                   <v-text-field v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details>
                   </v-text-field>
                 </v-col>
               </v-row>
             </template>
-            <template v-slot:item.url="{ item }">
-              <v-chip small color="primary" outlined :href="item.url" target="_blank">File</v-chip>
-            </template>
           </v-data-table>
         </v-skeleton-loader>
+
+        <!-- <table style="width:100%">
+          <tr>
+            <th>Apellidos, Nombres</th>
+            <th>Email</th>
+            <th>DNI</th>
+          </tr>
+          <tr v-for="item in dataToShow" :key="item.id">
+            <td> {{item.profile.fullName}} </td>
+            <td> {{item.profile.userEmail}} </td>
+            <td> {{item.profile.dni}} </td>
+            <td> PSM-109 </td>
+          </tr>
+        </table> -->
       </v-col>
       <v-snackbar v-model="snackbar" :timeout="timeout">
         {{ textSnackbar }}
@@ -43,14 +78,9 @@
   import {
     db
   } from '@/firebaseInit.js'
-  import {
-    mapGetters
-  } from 'vuex'
   export default {
     data() {
       return {
-        // Config del select
-        courseSelected: '',
         // Config Skeleton
         loadingData: true,
         // Config del snackbar
@@ -70,41 +100,43 @@
             value: 'profile.userEmail'
           },
           {
-            text: 'Sesión',
+            text: 'DNI',
             align: 'start',
-            value: 'numSession'
+            value: 'profile.dni'
           },
           {
-            text: 'URL',
+            text: 'Celular',
             align: 'start',
-            value: 'url'
+            value: 'profile.phone'
           },
           {
-            text: 'Nota',
+            text: 'Cursos',
             align: 'start',
-            value: 'note'
+            value: 'courses'
+          },
+          {
+            text: 'UID',
+            align: 'start',
+            value: 'id'
           }
         ],
         allData: [],
         dataToUpdate: [],
         loading: false,
         endRequest: false,
-        responseMsg: '',
-        allUserUID: [],
-        usersToShow: []
+        responseMsg: ''
+
       }
     },
     mounted() {
       let that = this
-      // Funcion para guardar todos los UIDs
-
+      // Funcion para llamar a todos los usuarios
       db.collection('users').where('role.student', "==", true)
         .get()
         .then(function (querySnapshot) {
           querySnapshot.forEach(function (doc) {
             let data = {
-              profile: {},
-              sessions: []
+              profile: {}
             }
             data.courses = doc.data().courses
             data.id = doc.id
@@ -114,59 +146,19 @@
             data.profile.userEmail = doc.data().email
             data.profile.dni = doc.data().profile.dni
             data.profile.phone = doc.data().profile.cellphone
+            data.courses = doc.data().courses
 
-            that.allUserUID.push(data)
+            that.allData.push(data)
           });
           that.loadingData = false
         })
     },
     computed: {
-      ...mapGetters(['allCoursesID']),
       dataToShow() {
         return this.allData.filter((res) => res.courses.length == 2)
       }
     },
     methods: {
-      getSessionBTN() {
-        let dataToUpdate = []
-        let usersEnroll = this.allUserUID.filter((user) => user.courses.includes(this.courseSelected))
-        this.loadingData = true
-        usersEnroll.forEach((u, index) => {
-
-          let docRef = db.collection('users').doc(u.id).collection('courses').doc(this.courseSelected)
-          docRef.get().then((doc) => {
-            if (doc.exists) {
-              docRef.collection('sessions').get().then(function (querySnapshot) {
-                querySnapshot.forEach(function (session) {
-
-                  let userToShow = {
-                    id: '',
-                    userid: u.id,
-                    profile: u.profile,
-                    numSession: session.id,
-                    sessionName: session.data().sessionName,
-                    nameFile: session.data().nameFile,
-                    url: session.data().url,
-                    note: session.data().note,
-                    timestamp: session.data().timestamp,
-                  }
-
-                  userToShow.id = u.id + '-' + session.id
-                  dataToUpdate.push(userToShow)
-                });
-              });
-            } else {
-              console.log(index, u.profile.fullName, "No ha enviado tarea");
-            }
-          }).catch(function (error) {
-            console.log("Error getting document:", error);
-          });
-
-        })
-        this.loadingData = false
-
-        this.usersToShow = dataToUpdate
-      },
       changeRequests(num) {
         console.log(num)
         this.selected.forEach(r => {

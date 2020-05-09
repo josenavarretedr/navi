@@ -128,7 +128,7 @@
           },{
             title: 'Revisar',
             icon: 'email-check-outline',
-            link: 'check'
+            link: '/check'
           }]
         }
         return navItems
