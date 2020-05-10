@@ -13,7 +13,7 @@
     </v-row>
     <v-row class="mt-10">
       <v-col>
-        <v-skeleton-loader :loading="loadingData" type="table">
+        <v-skeleton-loader :loading="usersToShow.length == 0" type="table">
           <v-data-table :headers="headers" :items="usersToShow" :search="search" item-key="id">
             <template v-slot:top>
               <v-row class="d-flex justify-space-around">
@@ -22,19 +22,64 @@
                   </v-text-field>
                 </v-col>
               </v-row>
+              <v-dialog v-model="dialog" max-width="700px">
+                <v-card>
+                  <v-card-title>
+                    <span class="headline">Revisar tareas</span>
+                  </v-card-title>
+
+                  <v-card-text>
+                    <v-container>
+                      <v-row>
+                        <v-col cols="12">
+                          <span class="title">Sesión: </span><span class="subtitle-1">{{editedItem.sessionName}}</span>
+                        </v-col>
+                        <v-col cols="12" sm="6" class="d-flex align-center">
+                          <p class="subtitle-2 mr-5">Archivo enviado:</p>
+                          <v-btn color="primary" fab small outlined @click="editItem(item)" :href="editedItem.url"
+                            target="_blank">
+                            <v-icon>mdi-file-link</v-icon>
+                          </v-btn>
+                        </v-col>
+                        <v-col cols="12" sm="4">
+                          <v-text-field v-model="editedItem.note" label="Nota" :rules="[max3]"></v-text-field>
+                        </v-col>
+                        <v-col cols="12">
+                          <v-text-field v-model="editedItem.comment" label="Comentario a la tarea"></v-text-field>
+                        </v-col>
+                      </v-row>
+                    </v-container>
+                  </v-card-text>
+
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" text @click="close">Cancelar</v-btn>
+                    <v-btn color="blue darken-1" text @click="save">Guardar</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
             </template>
             <template v-slot:item.url="{ item }">
-              <v-chip small color="primary" outlined :href="item.url" target="_blank">File</v-chip>
+              <v-btn color="primary" fab small outlined @click="editItem(item)" :href="item.url" target="_blank">
+                <v-icon>mdi-file-link</v-icon>
+              </v-btn>
             </template>
+            <template v-slot:item.actions="{ item }">
+              <v-btn color="primary" small dark @click="editItem(item)">
+                <v-icon>mdi-pencil</v-icon>
+              </v-btn>
+            </template>
+            <template v-slot:no-data>
+              <p class="headline">Por favor selecciona un curso en la lista de arriba</p>
+            </template>
+
           </v-data-table>
         </v-skeleton-loader>
+        <v-snackbar v-model="snackbar" :timeout="2000" :color="snackColor">
+          {{ textSnackbar }}
+          <v-btn text @click="snackbar = false">Cerrar</v-btn>
+        </v-snackbar>
       </v-col>
-      <v-snackbar v-model="snackbar" :timeout="timeout">
-        {{ textSnackbar }}
-        <v-btn color="blue" text @click="snackbar = false">
-          Cerrar
-        </v-btn>
-      </v-snackbar>
     </v-row>
   </v-container>
 </template>
@@ -56,7 +101,7 @@
         // Config del snackbar
         snackbar: false,
         textSnackbar: 'My timeout is set to 2000.',
-        timeout: 4000,
+        snackColor: '',
         // Config de la tabla
         search: '',
         headers: [{
@@ -64,11 +109,11 @@
             align: 'start',
             value: 'profile.fullName',
           },
-          {
-            text: 'Email',
-            align: 'start',
-            value: 'profile.userEmail'
-          },
+          // {
+          //   text: 'Email',
+          //   align: 'start',
+          //   value: 'profile.userEmail'
+          // },
           {
             text: 'Sesión',
             align: 'start',
@@ -83,7 +128,16 @@
             text: 'Nota',
             align: 'start',
             value: 'note'
-          }
+          },
+          {
+            text: 'Comentario',
+            value: 'comment'
+          },
+          {
+            text: 'Actions',
+            value: 'actions',
+            sortable: false
+          },
         ],
         allData: [],
         dataToUpdate: [],
@@ -91,7 +145,26 @@
         endRequest: false,
         responseMsg: '',
         allUserUID: [],
-        usersToShow: []
+        usersToShow: [],
+        // Setting crud option
+        dialog: false,
+        editedIndex: -1,
+        editedItem: {
+          sessionName: '',
+          url: '',
+          note: '',
+          comment: ''
+          // userFullName: 0,
+        },
+        defaultItem: {
+          sessionName: '',
+          url: '',
+          note: '',
+          comment: ''
+          // userFullName: 0,
+        },
+        // Regla para notas
+        max3: v => v <= 3 || 'Máxima calificación es 3',
       }
     },
     mounted() {
@@ -117,7 +190,7 @@
 
             that.allUserUID.push(data)
           });
-          that.loadingData = false
+          // that.loadingData = false
         })
     },
     computed: {
@@ -130,8 +203,7 @@
       getSessionBTN() {
         let dataToUpdate = []
         let usersEnroll = this.allUserUID.filter((user) => user.courses.includes(this.courseSelected))
-        this.loadingData = true
-        usersEnroll.forEach((u, index) => {
+        usersEnroll.forEach((u) => {
 
           let docRef = db.collection('users').doc(u.id).collection('courses').doc(this.courseSelected)
           docRef.get().then((doc) => {
@@ -151,21 +223,56 @@
                     timestamp: session.data().timestamp,
                   }
 
+                  if (session.data().comment) {
+                    userToShow.comment = session.data().comment
+                  } else {
+                    userToShow.comment = ''
+                  }
+
                   userToShow.id = u.id + '-' + session.id
                   dataToUpdate.push(userToShow)
                 });
               });
-            } else {
-              console.log(index, u.profile.fullName, "No ha enviado tarea");
             }
-          }).catch(function (error) {
-            console.log("Error getting document:", error);
-          });
+          })
 
         })
         this.loadingData = false
 
         this.usersToShow = dataToUpdate
+      },
+      editItem(item) {
+        this.editedIndex = this.usersToShow.indexOf(item)
+        this.editedItem = Object.assign({}, item)
+        this.dialog = true
+      },
+      close() {
+        this.dialog = false
+        this.$nextTick(() => {
+          this.editedItem = Object.assign({}, this.defaultItem)
+          this.editedIndex = -1
+        })
+      },
+      save() {
+        if (this.editedIndex > -1) {
+          Object.assign(this.usersToShow[this.editedIndex], this.editedItem)
+
+          let that = this
+          let docRef = db.collection('users').doc(this.editedItem.userid).collection('courses').doc(this.courseSelected)
+          docRef.collection('sessions').doc(this.editedItem.numSession).update({
+            note: this.editedItem.note,
+            comment: this.editedItem.comment
+          }).then(function () {
+            that.snackbar = true
+            that.snackColor = 'success'
+            that.textSnackbar = 'Datos cargados'
+          })
+
+        } else {
+          this.usersToShow.push(this.editedItem)
+        }
+        this.close()
+
       },
       changeRequests(num) {
         console.log(num)
