@@ -4,7 +4,7 @@
       Bienvenido a
     </p>
     <p class="display-3">Campus <strong>Navi</strong></p>
-    <p class="font-weight-light">Conocimiento cercano</p>
+    <p class="font-weight-light">Conocimiento más cerca de ti.</p>
   </v-col>
 </template>
 

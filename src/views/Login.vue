@@ -96,10 +96,6 @@
 
 <style lang="scss" scoped>
 
-.borde{
-  // border: solid 1px red;
-}
-
 #container{
   min-height: calc(100vh - 100px);
 }
