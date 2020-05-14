@@ -100,7 +100,7 @@
         ]
         if (this.userIsAuthenticated  && this.adminSet ==0) {
           navItems = [{
-              title: 'Cursos',
+              title: 'Mis cursos',
               icon: 'folder',
               link: '/in/cursos'
             },

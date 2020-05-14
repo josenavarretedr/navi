@@ -14,6 +14,7 @@ export default new Vuex.Store({
     userUID: null,
     user: null,
     loading: false,
+    endVar: false,
     error: null,
     allCoursesID: null,
     courseInfo: null,
@@ -48,6 +49,9 @@ export default new Vuex.Store({
 
     setLoading(state, payload) {
       state.loading = payload
+    },
+    setEndVar(state, payload){
+      state.endVar = payload
     },
     setError(state, payload) {
       state.error = payload
@@ -144,6 +148,7 @@ export default new Vuex.Store({
       getters,
       dispatch
     }, payload) {
+      commit('setEndVar', false)
       commit('setLoading', true)
       db.collection('users').doc(getters.userID)
         .update({
@@ -157,6 +162,7 @@ export default new Vuex.Store({
           'profile.adress': payload.adress
         }).then(function () {
           dispatch('getUserInfo', getters.userID)
+          commit('setEndVar', true)
           commit('setLoading', false)
         })
     },
@@ -262,6 +268,10 @@ export default new Vuex.Store({
     },
     loading(state) {
       return state.loading
+    },
+
+    endVar(state){
+      return state.endVar
     },
 
     getSessionsCourse(state) {

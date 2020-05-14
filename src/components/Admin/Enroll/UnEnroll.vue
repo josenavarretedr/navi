@@ -1,15 +1,15 @@
 <template>
   <div>
     Retirar del curso
-    <AllUsersTable></AllUsersTable>
+    <UserByCourse></UserByCourse>
   </div>
 </template>
 
 <script>
-import AllUsersTable from '../UserManagment/AllUsersTable'
+import UserByCourse from '../UserManagment/UserByCourse'
   export default {
     components: {
-      AllUsersTable
+      UserByCourse
     }    
   }
 </script>

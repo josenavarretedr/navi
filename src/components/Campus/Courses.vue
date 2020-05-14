@@ -2,15 +2,15 @@
   <v-container>
     <v-row class="d-flex justify-space-around">
       <v-col cols="10">
-        <p v-if="coursesIn.length == 0" class="font-weight-light">No estás registrado en ningún curso</p>
-        <p v-if="coursesIn.length > 0" class="font-weight-light">Estos son los cursos en los que estás registrado</p>
+        <p v-if="coursesIn.length == 0" class="font-weight-light title">No estás registrado en ningún curso</p>
+        <p v-if="coursesIn.length > 0" class="font-weight-light title">Mis cursos registrados</p>
       </v-col>
       <CardCourse v-for="course in coursesIn" :key="course.id" :course="course" :routeCheck='routeCheck'>
       </CardCourse>
     </v-row>
     <v-row>
 
-      <v-col cols="10" offset="1">
+      <v-col class="mt-10" cols="10" offset="1">
         <p class="font-weight-light">
           Estos son las solicitudes que has realizado:
         </p>

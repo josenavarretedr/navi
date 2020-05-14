@@ -2,7 +2,7 @@
   <v-col cols="10" md="6" lg="4">
     <v-skeleton-loader v-if="loadingData" type="card">
     </v-skeleton-loader>
-    <v-card v-else>
+    <v-card v-else elevation="10" id="card">
       <v-img :src="courseInfo.info.banner" class="white--text align-end"
         gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)" height="200px">
         <v-card-title>
@@ -37,7 +37,7 @@
           </v-btn>
         </v-row>
       </v-card-actions>
-      <v-img v-if="courseInfo.b2b.check" height="70" :src="courseInfo.b2b.logoURL" contain>
+      <v-img class="mt-3" v-if="courseInfo.b2b.check" height="70" :src="courseInfo.b2b.logoURL" contain>
         <template v-slot:placeholder>
           <v-row class="fill-height ma-0" align="center" justify="center">
             <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
@@ -270,5 +270,8 @@
 <style lang="scss" scoped>
   .borde {
     border: solid 1px red
+  } 
+  #card {
+    border: solid .8px #fff;
   }
 </style>

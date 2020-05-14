@@ -13,7 +13,7 @@
     </v-row>
     <v-row class="mt-10">
       <v-col>
-        <v-skeleton-loader :loading="usersToShow.length == 0" type="table">
+        <!-- <v-skeleton-loader :loading="usersToShow.length == 0" type="table">
           <v-data-table dense :headers="headers" :items="usersToShow" :search="search" item-key="id">
             <template v-slot:top>
               <v-row class="d-flex justify-space-around">
@@ -74,8 +74,8 @@
             </template>
 
           </v-data-table>
-        </v-skeleton-loader>
-        <!-- <table style="width:100%">
+        </v-skeleton-loader> -->
+        <table style="width:100%">
           <tr>
             <th>Nombre</th>
             <th>Email</th>
@@ -88,7 +88,7 @@
             <td>{{user.profile.dni}}</td>
             <td> {{user.numSession}} </td>
           </tr>
-        </table> -->
+        </table>
         <v-snackbar v-model="snackbar" :timeout="2000" :color="snackColor">
           {{ textSnackbar }}
           <v-btn text @click="snackbar = false">Cerrar</v-btn>
@@ -215,135 +215,11 @@
     },
     methods: {
       getSessionBTN() {
-        let dataToUpdate = []
         let usersEnroll = this.allUserUID.filter((user) => user.courses.includes(this.courseSelected))
-        usersEnroll.forEach((u) => {
-
-          let docRef = db.collection('users').doc(u.id).collection('courses').doc(this.courseSelected)
-          docRef.get().then((doc) => {
-            if (doc.exists) {
-              docRef.collection('sessions').get().then(function (querySnapshot) {
-                querySnapshot.forEach(function (session) {
-
-                  let userToShow = {
-                    id: '',
-                    userid: u.id,
-                    profile: u.profile,
-                    numSession: session.id,
-                    sessionName: session.data().sessionName,
-                    nameFile: session.data().nameFile,
-                    url: session.data().url,
-                    note: session.data().note,
-                    timestamp: session.data().timestamp,
-                  }
-
-                  if (session.data().comment) {
-                    userToShow.comment = session.data().comment
-                  } else {
-                    userToShow.comment = ''
-                  }
-
-                  userToShow.id = u.id + '-' + session.id
-                  dataToUpdate.push(userToShow)
-                });
-              });
-            } 
-          })
-
-        })
         this.loadingData = false
 
-        this.usersToShow = dataToUpdate
+        this.usersToShow = usersEnroll
       },
-      editItem(item) {
-        this.editedIndex = this.usersToShow.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialog = true
-      },
-      close() {
-        this.dialog = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
-      save() {
-        if (this.editedIndex > -1) {
-          Object.assign(this.usersToShow[this.editedIndex], this.editedItem)
-
-          let that = this
-          let docRef = db.collection('users').doc(this.editedItem.userid).collection('courses').doc(this.courseSelected)
-          docRef.collection('sessions').doc(this.editedItem.numSession).update({
-            note: this.editedItem.note,
-            comment: this.editedItem.comment
-          }).then(function () {
-            that.snackbar = true
-            that.snackColor = 'success'
-            that.textSnackbar = 'Datos cargados'
-          })
-
-        } else {
-          this.usersToShow.push(this.editedItem)
-        }
-        this.close()
-
-      },
-      changeRequests(num) {
-        console.log(num)
-        this.selected.forEach(r => {
-          let userToUpdate = this.dataToUpdate.filter((data) => data.id == r.userID)[0]
-          // Actualiza localmente el stado del request
-          userToUpdate.requests[r.indexRq].status = num
-
-          // Actualiza los cursos localmente
-          if (num == 1) {
-            if (userToUpdate.courses.includes(r.courseId) == false) {
-              userToUpdate.courses.push(r.courseId)
-            }
-            this.textSnackbar = 'Se aprobó la solicitud y se matricularon en los cursos'
-          }
-
-          // Eliminar de la data que se muestra
-          for (var i = 0; i < this.allData.length; i++) {
-            if (this.allData[i].idRequest === r.idRequest) {
-              this.allData.splice(i, 1);
-            }
-          }
-          // Mandar actualización a BD - sólo el status
-
-
-          db.collection('users').doc(userToUpdate.id).update({
-            // Actualiza el estado de request
-            coursesRequests: userToUpdate.requests,
-            // Actualizar BD - courses
-            courses: userToUpdate.courses
-
-          })
-
-        })
-        this.selected = []
-        this.snackbar = true
-        switch (num) {
-          case 1:
-            this.textSnackbar = 'Se aprobaron las solicitudes y se matricularon en los cursos'
-            break
-          case 2:
-            this.textSnackbar = 'Se rechazó la solitud'
-            break
-          case 3:
-            this.textSnackbar = 'Se rechazó la solitud por fata de pago'
-            break
-          case 4:
-            this.textSnackbar = 'Se rechazó la solitud por perfil incompleto'
-            break
-        }
-      }
     },
   }
 </script>
-
-<style lang="scss" scoped>
-  .borde {
-    border: 1px red solid
-  }
-</style>

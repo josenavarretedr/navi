@@ -6,7 +6,7 @@ import {
 
 
 // Views
-
+// 
 import Home from '../views/Home.vue'
 import Profile from '../views/Profile.vue'
 import Login from '../views/Login.vue'
@@ -17,6 +17,7 @@ Vue.use(VueRouter)
 const routes = [{
     path: '/',
     name: 'Home',
+    // component: Login,
     component: Home,
     meta: {
       guest: true

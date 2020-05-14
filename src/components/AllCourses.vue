@@ -2,7 +2,7 @@
   <v-container>
     <v-row class="d-flex justify-space-around">
       <v-col cols="10">
-        <p class="font-weight-light">Estos son los cursos que tenemos a tu disposición:</p>
+        <p class="font-weight-light title">Cursos disponibles:</p>
       </v-col>
       <CardCourse v-for="course in allCoursesID" :key="course" :course="course" :routeCheck='routeCheck'>
       </CardCourse>
@@ -35,5 +35,7 @@
 </script>
 
 <style lang="scss" scoped>
-
+.title {
+  color: #fff;
+}
 </style>

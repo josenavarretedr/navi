@@ -79,9 +79,7 @@
 
               <v-row class="d-flex">
                 <v-col cols="12">
-                  <v-btn color="primary" @click="saveProfile"
-                  :loading="loading"
-                  :disabled="loading">
+                  <v-btn color="primary" @click="saveProfile" :loading="loading" :disabled="loading">
                     Guardar
                     <template v-slot:loader>
                       <span class="custom-loader">
@@ -96,6 +94,10 @@
         </v-card>
       </v-col>
     </v-row>
+    <v-snackbar v-model="snackbar" :timeout="2000" color="success">
+      {{ textSnackbar }}
+      <v-btn text @click="snackbar = false">Cerrar</v-btn>
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -116,14 +118,24 @@
         v => /.+@.+/.test(v) || 'Debe de ser un correo válido',
       ],
       menu: false,
+      // Config del snackbar
+      snackbar: false,
+      textSnackbar: 'Se ha actualizado correctamente los datos',
     }),
     watch: {
       menu(val) {
         val && setTimeout(() => (this.$refs.picker.activePicker = 'YEAR'))
       },
+      endVar(val){
+        if (val == true){
+          this.snackbar = true
+        } else {
+          this.snackbar = false
+        }
+      }
     },
     computed: {
-      ...mapGetters(['user','loading'])
+      ...mapGetters(['user', 'loading','endVar']),
     },
     methods: {
       ...mapActions(['updateProfile']),
