@@ -11,6 +11,7 @@ import Home from '../views/Home.vue'
 import Profile from '../views/Profile.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
+import Reset from '../views/Reset.vue'
 
 Vue.use(VueRouter)
 
@@ -101,6 +102,14 @@ const routes = [{
     path: '/register',
     name: 'Register',
     component: Register,
+    meta: {
+      guest: true
+    }
+  },
+  {
+    path: '/reset',
+    name: 'Reset',
+    component: Reset,
     meta: {
       guest: true
     }

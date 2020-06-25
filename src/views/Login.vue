@@ -40,6 +40,9 @@
                 <v-col cols="4">
                   <v-btn color="primary" to="/register" small outlined block>Registrate</v-btn>
                 </v-col>
+                <v-col cols="11" offset="1">
+                  <p class="caption link" @click="resetLink">¿Olvidaste tu contraseña?</p>
+                </v-col>
               </v-row>
             </v-container>
           </v-form>
@@ -81,6 +84,9 @@
       },
       onDismissed() {
         this.clearError()
+      },
+      resetLink(){
+        this.$router.push('/reset')
       }
     },
     watch: {

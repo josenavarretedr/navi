@@ -167,7 +167,6 @@
     },
     methods: {
       changeRequests(num) {
-        console.log(num)
         this.selected.forEach(r => {
           let userToUpdate = this.dataToUpdate.filter((data) => data.id == r.userID)[0]
           // Actualiza localmente el stado del request

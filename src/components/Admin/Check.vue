@@ -287,56 +287,6 @@
         }
         this.close()
 
-      },
-      changeRequests(num) {
-        console.log(num)
-        this.selected.forEach(r => {
-          let userToUpdate = this.dataToUpdate.filter((data) => data.id == r.userID)[0]
-          // Actualiza localmente el stado del request
-          userToUpdate.requests[r.indexRq].status = num
-
-          // Actualiza los cursos localmente
-          if (num == 1) {
-            if (userToUpdate.courses.includes(r.courseId) == false) {
-              userToUpdate.courses.push(r.courseId)
-            }
-            this.textSnackbar = 'Se aprobó la solicitud y se matricularon en los cursos'
-          }
-
-          // Eliminar de la data que se muestra
-          for (var i = 0; i < this.allData.length; i++) {
-            if (this.allData[i].idRequest === r.idRequest) {
-              this.allData.splice(i, 1);
-            }
-          }
-          // Mandar actualización a BD - sólo el status
-
-
-          db.collection('users').doc(userToUpdate.id).update({
-            // Actualiza el estado de request
-            coursesRequests: userToUpdate.requests,
-            // Actualizar BD - courses
-            courses: userToUpdate.courses
-
-          })
-
-        })
-        this.selected = []
-        this.snackbar = true
-        switch (num) {
-          case 1:
-            this.textSnackbar = 'Se aprobaron las solicitudes y se matricularon en los cursos'
-            break
-          case 2:
-            this.textSnackbar = 'Se rechazó la solitud'
-            break
-          case 3:
-            this.textSnackbar = 'Se rechazó la solitud por fata de pago'
-            break
-          case 4:
-            this.textSnackbar = 'Se rechazó la solitud por perfil incompleto'
-            break
-        }
       }
     },
   }

@@ -109,6 +109,17 @@ export default new Vuex.Store({
         })
     },
 
+    sendPasswordReset({commit},payload){
+      auth.sendPasswordResetEmail(payload.email)
+      .then(function(){
+        alert('Se ha enviado un correo electrónico, por favor revísalo.')
+      })
+      .catch((error) => {
+        commit('setLoading', false)
+        commit('setError', error)
+      })
+    },
+
     signUserOut({
       commit
     }) {
