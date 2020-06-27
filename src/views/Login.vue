@@ -33,13 +33,13 @@
                     </template>
                   </v-btn>
                 </v-col>
-                <v-col cols="6" offset="1">
+                <!-- <v-col cols="6" offset="1">
                   <p class="body-2">Si no tienes cuenta por favor
                   </p>
                 </v-col>
                 <v-col cols="4">
                   <v-btn color="primary" to="/register" small outlined block>Registrate</v-btn>
-                </v-col>
+                </v-col> -->
                 <v-col cols="11" offset="1">
                   <p class="caption link" @click="resetLink">¿Olvidaste tu contraseña?</p>
                 </v-col>

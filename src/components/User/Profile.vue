@@ -3,7 +3,8 @@
     <v-row class="d-flex justify-space-around">
       <v-col cols="10" md="8">
         <p class="headline">Completa tu perfil</p>
-        <p class="text-justify">Rellena la información de tu perfil, de esta forma podremos tener tus datos actualizados
+        <p class="text-justify">Completa la información de tu perfil, de esta forma podremos tener tus datos
+          actualizados
           para emisión de diplomas o para contactarte.</p>
       </v-col>
       <v-col cols="10" md="8">
@@ -98,6 +99,14 @@
       {{ textSnackbar }}
       <v-btn text @click="snackbar = false">Cerrar</v-btn>
     </v-snackbar>
+    <v-tooltip left>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn to="/reset" absolute fab fixed bottom right color="primary" dark v-bind="attrs" v-on="on" id="btnFlotante">
+          <v-icon>mdi-alert-decagram-outline</v-icon>
+        </v-btn>
+      </template>
+      <span>Resetear contraseña</span>
+    </v-tooltip>
   </v-container>
 </template>
 
@@ -126,8 +135,8 @@
       menu(val) {
         val && setTimeout(() => (this.$refs.picker.activePicker = 'YEAR'))
       },
-      endVar(val){
-        if (val == true){
+      endVar(val) {
+        if (val == true) {
           this.snackbar = true
         } else {
           this.snackbar = false
@@ -135,7 +144,7 @@
       }
     },
     computed: {
-      ...mapGetters(['user', 'loading','endVar']),
+      ...mapGetters(['user', 'loading', 'endVar']),
     },
     methods: {
       ...mapActions(['updateProfile']),
@@ -160,5 +169,9 @@
 </script>
 
 <style lang="scss" scoped>
-
+  #btnFlotante {
+    border: solid 1px red;
+    bottom: 60px;
+    right: 20px
+  }
 </style>

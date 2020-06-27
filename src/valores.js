@@ -102,3 +102,11 @@ allCourses: [
     link: 'https://www.google.com/'
   }
 ]
+
+/* 
+https://campusvirtual.aulavirtualusmp.pe/mdlchiclayo/course/view.php?id=633
+https://campusvirtual.aulavirtualusmp.pe/mdlchiclayo/mod/assign/view.php?id=40791
+https://campusvirtual.aulavirtualusmp.pe/mdlchiclayo/mod/assign/view.php?id=40791&action=editsubmission
+
+https://campusvirtual.aulavirtualusmp.pe/mdlchiclayo/grade/report/user/index.php?id=633&nomformat=unidad
+*/

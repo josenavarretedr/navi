@@ -92,11 +92,11 @@
             icon: 'login',
             link: '/login'
           },
-          {
-            title: 'Registro',
-            icon: 'account-plus',
-            link: '/register'
-          }
+          // {
+          //   title: 'Registro',
+          //   icon: 'account-plus',
+          //   link: '/register'
+          // }
         ]
         if (this.userIsAuthenticated  && this.adminSet ==0) {
           navItems = [{
