@@ -1,15 +1,15 @@
 <template>
   <div>
     Retirar del curso
-    <UserByCourse></UserByCourse>
+    <CreatePGP></CreatePGP>
   </div>
 </template>
 
 <script>
-import UserByCourse from '../UserManagment/UserByCourse'
+import CreatePGP from '../UserManagment/CreatePGP'
   export default {
     components: {
-      UserByCourse
+      CreatePGP
     }    
   }
 </script>

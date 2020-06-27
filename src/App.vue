@@ -27,7 +27,7 @@
     <v-app-bar app color="primary" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="hidden-md-and-up"></v-app-bar-nav-icon>
       <v-toolbar-title class="ml-6">
-        <router-link id="navi" to="/" tag="span" style="cursor: pointer">Campus <span style="font-weight: bold">Navi</span></router-link>
+        <router-link id="navi" to="/in/cursos" tag="span" style="cursor: pointer">Campus <span style="font-weight: bold">Navi</span></router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
 

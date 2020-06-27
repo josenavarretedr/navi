@@ -100,8 +100,10 @@ export default new Vuex.Store({
       commit('clearError')
       auth.signInWithEmailAndPassword(payload.email, payload.password)
         .then(function () {
+        
+          console.log('Se inicio sesión')
           commit('setLoading', false)
-          router.push('/')
+          router.push('/in/cursos')
         })
         .catch((error) => {
           commit('setLoading', false)

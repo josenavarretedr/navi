@@ -22,7 +22,8 @@ const routes = [{
     component: Home,
     meta: {
       guest: true
-    }
+    },
+    // redirect : '/in/cursos'
   },
   {
     path: '*',
