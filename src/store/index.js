@@ -100,8 +100,6 @@ export default new Vuex.Store({
       commit('clearError')
       auth.signInWithEmailAndPassword(payload.email, payload.password)
         .then(function () {
-        
-          console.log('Se inicio sesión')
           commit('setLoading', false)
           router.push('/in/cursos')
         })
@@ -292,7 +290,7 @@ export default new Vuex.Store({
     },
 
     getSessionsCourse(state) {
-      return state.sessionsCourse
+      return state.sessionsCourse.sort((a,b) =>  a.created - b.created)
     },
 
     getSessionsCourseID(state){

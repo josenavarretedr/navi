@@ -13,7 +13,7 @@
     </v-row>
     <v-row class="mt-10">
       <v-col>
-        <v-skeleton-loader :loading="usersToShow.length == 0" type="table">
+        <!-- <v-skeleton-loader :loading="usersToShow.length == 0" type="table">
           <v-data-table dense :headers="headers" :items="usersToShow" :search="search" item-key="id">
             <template v-slot:top>
               <v-row class="d-flex justify-space-around">
@@ -74,8 +74,8 @@
             </template>
 
           </v-data-table>
-        </v-skeleton-loader>
-        <!-- <table style="width:100%">
+        </v-skeleton-loader> -->
+        <table style="width:100%">
           <tr>
             <th>Nombre</th>
             <th>Email</th>
@@ -88,7 +88,7 @@
             <td>{{user.profile.dni}}</td>
             <td> {{user.numSession}} </td>
           </tr>
-        </table> -->
+        </table>
         <v-snackbar v-model="snackbar" :timeout="2000" :color="snackColor">
           {{ textSnackbar }}
           <v-btn text @click="snackbar = false">Cerrar</v-btn>

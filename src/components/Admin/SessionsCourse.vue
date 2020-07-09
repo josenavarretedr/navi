@@ -63,9 +63,13 @@
     db,
     storage
   } from '@/firebaseInit'
+
+  import { v4 as uuidv4 } from 'uuid';
+
   export default {
     data() {
       return {
+        newSessionID: '',
         newSession: true,
         sessionSelect: null,
         name: '',
@@ -106,9 +110,9 @@
       upload(file) {
         this.uploading = true
         this.uploadEnd = false
-        let numSesionsPlusOne = this.getSessionsCourseID.length + 1
+        // let numSesionsPlusOne = this.getSessionsCourseID.length + 1
         if (this.newSession == true) {
-          this.uploadTask = storage.ref(`course/${this.$route.params.id}/S${numSesionsPlusOne}-${file.name}`).put(file)
+          this.uploadTask = storage.ref(`course/${this.$route.params.id}/sessions/${file.name}`).put(file)
         } else {
           this.uploadTask = storage.ref(`course/${this.$route.params.id}/${this.getSessionsCourseID}-${file.name}`).put(
             file)
@@ -116,34 +120,26 @@
       },
       saveSession(downloadURL) {
         let data = null
-        let numSesionsPlusOne = this.getSessionsCourseID.length + 1
+        // let numSesionsPlusOne = this.getSessionsCourseID.length + 1
         if (this.newSession == true) {
-          if (this.getSessionsCourseID.length == 0) {
-            data = {
+          this.newSessionID = uuidv4()
+          data = {
               name: this.name,
               description: this.description,
-              id: 'S1',
+              id: this.newSessionID,
               link: downloadURL,
-              homework: this.kindOfSession
+              homework: this.kindOfSession,
+              created: new Date().getTime()
             }
-          } else{
-            let s = "S"
-            let a = s+numSesionsPlusOne
-            data = {
-              name: this.name,
-              description: this.description,
-              id: a,
-              link: downloadURL,
-              homework: this.kindOfSession
-            }
-          }
         } else {
           data = {
             name: this.name,
             description: this.description,
             id: this.sessionSelect,
             link: downloadURL,
-            homework: this.kindOfSession
+            homework: this.kindOfSession,
+            created: new Date().getTime()
+
           }
         }
 
@@ -156,6 +152,7 @@
             that.description = ''
             that.session = ''
             that.url = ''
+            that.newSessionID = ''
           })
           // .catch(function (error) {
           //   console.error("Error writing document: ", error);

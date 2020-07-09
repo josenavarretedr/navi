@@ -1,7 +1,10 @@
 <template>
   <div>
-    Hola desde creando
-    <v-btn small color="primary" @click="createUser">Crear usuarios</v-btn>
+    Hola desde creandoasdas
+    <v-btn small color="primary" @click="practica">Crear ussssuarios</v-btn>
+    <pre>
+      {{$data.usar}}
+    </pre>
   </div>
 </template>
 
@@ -9,6 +12,7 @@
   import {
     auth,
   } from '@/firebaseInit'
+  import { v4 as uuidv4 } from 'uuid';
 
   export default {
     data() {
@@ -279,10 +283,15 @@
             email: "rluyap@gmail.com",
             phone: "976008811"
           }
-        ]
+        ],
+        usar : 'sadas'
       }
     },
     methods: {
+      practica(){
+        this.usar = uuidv4()
+        // console.log(this.usar)
+      },
       createUser() {
         // this.users.forEach(user => {
         //   auth.createUserWithEmailAndPassword(user.email, user.dni)
@@ -297,13 +306,8 @@
         // })
         auth.createUserWithEmailAndPassword('lili_27ad@hotmail.com','16586962')
           .then(function () {
-            console.log('Se creo el usuario: lili_27ad@hotmail.com con contraseña 16586962 ')
+            // console.log('Se creo el usuario: lili_27ad@hotmail.com con contraseña 16586962 ')
           })
-          .catch(
-            error => {
-              console.log(error)
-            }
-          )
       }
     },
   }
