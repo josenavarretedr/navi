@@ -11,15 +11,15 @@
       </thead>
       <tbody>
         <!-- TODO poner un loader que responda a un computed mientras se cargan las tareas -->
-        <tr v-for="homeWork in homeWorks" :key="homeWork.sessionName">
+        <tr v-for="homeWork in homeWorks" :key="homeWork.sessionIDCourse">
           <td>{{ homeWork.sessionName }}</td>
           <td>
             <v-chip small color="primary" outlined :href="homeWork.url" target="_blank">
               Enlace
             </v-chip>
           </td>
-          <!-- TODO hacer que el timestamp se haga en formato legible destrozar el new Date() -->
-          <td>{{ homeWork.timestamp }}</td>
+          <td v-if="'created' in homeWork">{{ new Date(homeWork.created).toISOString().substr(0, 10) }}</td>
+          <td v-else> {{homeWork.timestamp}} </td>
           <td>{{ homeWork.note }}</td>
         </tr>
       </tbody>

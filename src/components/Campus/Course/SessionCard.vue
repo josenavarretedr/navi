@@ -26,7 +26,7 @@
             <v-card-text class="caption">
               Según la información de la sesión, envía tu tarea mediante este medio.
 
-              <FileSelector :sessionName="session.name" :sessionNum="sessionIndex" :courseId="this.$route.params.id"></FileSelector>
+              <FileSelector :sessionName="session.name" :sessionID="session.id" :courseId="this.$route.params.id"></FileSelector>
             </v-card-text>
           </div>
         </v-expand-transition>
@@ -41,7 +41,7 @@
     components: {
       FileSelector
     },
-    props:['session','sessionIndex'],
+    props:['session'],
     data: () => ({
       show: false,
     }),

@@ -23,7 +23,7 @@
   } from '@/firebaseInit.js'
   import { mapGetters, mapActions } from 'vuex'
   export default {
-    props:['sessionNum','courseId','sessionName'],
+    props:['sessionID','courseId','sessionName'],
     data() {
       return {
         progressUpload: 0,
@@ -56,10 +56,9 @@
         })
       },
       upload(file) {
-        const numSession = this.sessionNum +1 
         this.uploading = true
         this.uploadEnd = false
-        this.uploadTask = storage.ref(`reception/${this.userID}/${this.courseId}/S${numSession+1}-${file.name}`).put(file)
+        this.uploadTask = storage.ref(`reception/${this.userID}/${this.courseId}/S${this.sessionID}-${file.name}`).put(file)
       }
     },
     watch: {
@@ -76,8 +75,8 @@
                 sessionName: this.sessionName,
                 nameFile: this.fileName,
                 course: this.courseId,
-                session: this.sessionNum+1,
-                url: this.dowloadUrl
+                session: this.sessionID,
+                url: this.dowloadUrl                
               })
             })
           })

@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <SessionCard v-for="(session, index) in getSessionsCourse" :key="session.id" :session="session" :sessionIndex="index"></SessionCard>
+    <SessionCard v-for="(session) in getSessionsCourse" :key="session.id" :session="session" ></SessionCard>
   </v-container>
 </template>
 

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import router from '@/router'
+import { v4 as uuidv4 } from 'uuid';
 
 import {
   auth,
@@ -191,12 +192,16 @@ export default new Vuex.Store({
         loading: true
       })
 
-      courseRef.collection('sessions').doc(`S${payload.session}`).set({
+      const sessionUID = uuidv4()
+
+      courseRef.collection('sessions').doc(`${payload.session}`).set({
+        sessionUID: sessionUID,
         sessionName: payload.sessionName,
+        sessionIDCourse: payload.session,
         nameFile: payload.nameFile,
         url: payload.url,
         note: 1,
-        timestamp: new Date().toISOString().substr(0, 10)
+        created: new Date().getTime()
       })
 
       // TODO hacer que se registre también el la base de datos de los cursos.

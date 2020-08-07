@@ -12,54 +12,112 @@
   import {
     auth,
   } from '@/firebaseInit'
-  import { v4 as uuidv4 } from 'uuid';
+  import {
+    v4 as uuidv4
+  } from 'uuid';
 
   export default {
     data() {
       return {
         users: [
           {
-            dni: "48204420",
-            email: "jllontopmatallana@gmail.com"
+            email: "domy2cespedes@gmail.com",
+            dni: "16645353"
         },
         {
-            dni: "72805413",
-            email: "flavioyoveraleon@gmail.com"
+            email: "lourdes_caramutti@hotmail.com",
+            dni: "16681141"
         },
         {
-            dni: "73242610",
-            email: "U17214529@utp.edu.pe"
+            email: "zoila1937gustvo@gmail.com",
+            dni: "16424350"
         },
         {
-            dni: "76298599",
-            email: "1625979@utp.edu.pe"
+            email: "rchiroquezumaeta@gmail.com",
+            dni: "16466021"
         },
         {
-            dni: "71233325",
-            email: "regaladosanchezmariacristina7@gmail.com"
+            email: "lupe668@hotmail.com",
+            dni: "32910392"
         },
         {
-            dni: "75010457",
-            email: "alvaroj.sc.18@gmail.com"
+            email: "franvica01@yahoo.es",
+            dni: "2880722"
         },
         {
-            dni: "47586704",
-            email: "elizabethfsilva23@gmail.com"
+            email: "rosanalunacordova12@gmail.com",
+            dni: "16445147"
         },
         {
-            dni: "71919518",
-            email: "u17103173@gmail.com"
+            email: "jorgetumez1612@gmail.com",
+            dni: "17562337"
         },
         {
-            dni: "72515679",
-            email: "ivanxitox_16@hotmail.com"
+            email: "victorhugochavezquesnay@gmail.com",
+            dni: "43448106"
+        },
+        {
+            email: "ceci05084@gmail.com",
+            dni: "16701309"
+        },
+        {
+            email: "alioz57@yahoo.es",
+            dni: "03844674"
+        },
+        {
+            email: "ulisesomar_15@hotmail.com",
+            dni: "16789421"
+        },
+        {
+            email: "jeannydm20@gmail.com",
+            dni: "16797401"
+        },
+        {
+            email: "pizarronancy58@gmail.com",
+            dni: "16433059"
+        },
+        {
+            email: "victormonsalve1604@gmail.com",
+            dni: "17597137"
+        },
+        {
+            email: "jesusvillegassosa201@gmail.com",
+            dni: "17423962"
+        },
+        {
+            email: "elvirafilomenaozetaguerrero@gmail.com",
+            dni: "03200300"
+        },
+        {
+            email: "oltegue@hotmail.com",
+            dni: "28105314"
+        },
+        {
+            email: "chinita70@outlook.com.ar",
+            dni: "16674697"
+        },
+        {
+            email: "rominaalejandraseclen@gmail.com",
+            dni: "60775617"
+        },
+        {
+            email: "salazarbancesjorgeluis@gmail.com",
+            dni: "16679521"
+        },
+        {
+            email: "rosavasquezrojas@hotmail.com",
+            dni: "16525151"
+        },
+        {
+            email: "pili25047@gmail.com",
+            dni: "16733828"
         }
         ],
-        usar : 'Usuarios de psdrubea'
+        usar: 'Usuarios de pruebassss'
       }
     },
     methods: {
-      practica(){
+      practica() {
         this.usar = uuidv4()
         // console.log(this.usar)
       },
@@ -75,9 +133,9 @@
             }
           )
         })
-        // auth.createUserWithEmailAndPassword('lili_27ad@hotmail.com','16586962')
+        // auth.createUserWithEmailAndPassword('albert_hll@hotmail.com', '09632889')
         //   .then(function () {
-        //     // console.log('Se creo el usuario: lili_27ad@hotmail.com con contraseña 16586962 ')
+        //     console.log('Se creo el usuario: albert_hll@hotmail.com con contraseña 09632889 ')
         //   })
       }
     },
