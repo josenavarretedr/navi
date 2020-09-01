@@ -111,21 +111,23 @@
             }
           ]
         } else if (this.userIsAuthenticated && this.adminSet == 1) {
-          navItems = [{
-            title: 'Curso',
-            icon: 'folder-clock-outline',
-            link: '/admin'
-          },
+          navItems = [
+          //   {
+          //   title: 'Curso',
+          //   icon: 'folder-clock-outline',
+          //   link: '/admin'
+          // },
           {
             title: 'Sesiones',
             icon: 'file-plus',
             link: '/sessions'
           },
+          // {
+          //   title: 'Matricular',
+          //   icon: 'face-recognition',
+          //   link: '/enroll',
+          // },
           {
-            title: 'Matricular',
-            icon: 'face-recognition',
-            link: '/enroll',
-          },{
             title: 'Revisar',
             icon: 'email-check-outline',
             link: '/check'
