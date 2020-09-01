@@ -13,7 +13,7 @@
     </v-row>
     <v-row class="mt-10">
       <v-col>
-        <!-- <v-skeleton-loader :loading="usersToShow.length == 0" type="table">
+        <v-skeleton-loader :loading="usersToShow.length == 0" type="table">
           <v-data-table dense :headers="headers" :items="usersToShow" :search="search" item-key="id">
             <template v-slot:top>
               <v-row class="d-flex justify-space-around">
@@ -74,8 +74,8 @@
             </template>
 
           </v-data-table>
-        </v-skeleton-loader> -->
-        <table style="width:100%">
+        </v-skeleton-loader>
+        <!-- <table style="width:100%">
           <tr>
             <th>Nombre</th>
             <th>Email</th>
@@ -88,7 +88,7 @@
             <td>{{user.profile.dni}}</td>
             <td> {{user.numSession}} </td>
           </tr>
-        </table>
+        </table> -->
         <v-snackbar v-model="snackbar" :timeout="2000" :color="snackColor">
           {{ textSnackbar }}
           <v-btn text @click="snackbar = false">Cerrar</v-btn>
@@ -103,7 +103,7 @@
     db
   } from '@/firebaseInit.js'
   import {
-    mapGetters
+    mapGetters, mapActions
   } from 'vuex'
   export default {
     data() {
@@ -131,7 +131,7 @@
           {
             text: 'Sesión',
             align: 'start',
-            value: 'numSession'
+            value: 'sessionName'
           },
           {
             text: 'URL',
@@ -208,13 +208,15 @@
         })
     },
     computed: {
-      ...mapGetters(['allCoursesID']),
+      ...mapGetters(['allCoursesID','getSessionsCourse']),
       dataToShow() {
         return this.allData.filter((res) => res.courses.length == 2)
       }
     },
     methods: {
+      ...mapActions(['setSessionsCourse']),
       getSessionBTN() {
+        this.setSessionsCourse(this.courseSelected)
         let dataToUpdate = []
         let usersEnroll = this.allUserUID.filter((user) => user.courses.includes(this.courseSelected))
         usersEnroll.forEach((u) => {
