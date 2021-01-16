@@ -40,7 +40,7 @@
             name: 'WhatsApp',
             icon: 'mdi-whatsapp',
             color: '00bb2d',
-            link: 'https://api.whatsapp.com/send?phone=51921492993&text=Hola,%20Rinsa.%20Quiero%20m%C3%A1s%20informaci%C3%B3n%20sobre%20'
+            link: 'https://api.whatsapp.com/send?phone=51978042801&text=Hola,%20Rinsa.%20Quiero%20m%C3%A1s%20informaci%C3%B3n%20sobre%20'
           }
         ]
       }
