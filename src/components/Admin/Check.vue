@@ -9,7 +9,8 @@
       <v-col cols="10" sm="6" class="d-flex justify-space-around">
         <v-select :items="allCoursesID" label="Selecciona un curso" v-model="courseSelected"></v-select>
       </v-col>
-      <v-btn small @click="getSessionBTN">Cargar sesiones</v-btn>
+      <!-- <v-btn small @click="getSessionBTN">Cargar sesiones</v-btn> -->
+      <v-btn small @click="cargarSesiones">Cargar sesiones Nombresss</v-btn>
     </v-row>
     <v-row class="mt-10">
       <v-col>
@@ -77,6 +78,16 @@
         </v-skeleton-loader> -->
         <table style="width:100%">
           <tr>
+            <th>Uid</th>
+            <th>SessionName</th>
+          </tr>
+          <tr v-for="session in sessionsRQ" :key="session.id">
+            <td> {{session.id}} </td>
+            <td> {{session.name}} </td>
+          </tr>
+        </table>
+        <!-- <table style="width:100%">
+          <tr>
             <th>Nombre</th>
             <th>Email</th>
             <th>DNI</th>
@@ -88,7 +99,7 @@
             <td>{{user.profile.dni}}</td>
             <td> {{user.numSession}} </td>
           </tr>
-        </table>
+        </table> -->
         <v-snackbar v-model="snackbar" :timeout="2000" :color="snackColor">
           {{ textSnackbar }}
           <v-btn text @click="snackbar = false">Cerrar</v-btn>
@@ -160,6 +171,9 @@
         responseMsg: '',
         allUserUID: [],
         usersToShow: [],
+        // Consiguiendo los nombres de las sesiones
+        sessionsRQ: [],
+
         // Setting crud option
         dialog: false,
         editedIndex: -1,
@@ -247,7 +261,7 @@
                   dataToUpdate.push(userToShow)
                 });
               });
-            } 
+            }
           })
 
         })
@@ -255,6 +269,18 @@
 
         this.usersToShow = dataToUpdate
       },
+
+      cargarSesiones() {
+        let data = []
+        db.collection('courses').doc(this.courseSelected).collection('sessions').get().then(function (querySnapshot) {
+          querySnapshot.forEach(function (doc) {
+            data.push(doc.data())
+          });
+        });
+        this.sessionsRQ = data
+        console.log(this.sessionsRQ)
+      },
+
       editItem(item) {
         this.editedIndex = this.usersToShow.indexOf(item)
         this.editedItem = Object.assign({}, item)

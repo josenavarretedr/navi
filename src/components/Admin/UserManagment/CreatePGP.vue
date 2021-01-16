@@ -1,7 +1,7 @@
 <template>
   <div>
-    Hola desde creandoasdas
-    <v-btn small color="primary" @click="createUser">Crear ussssuarios</v-btn>
+    Hola desde creando usuarios
+    <v-btn small color="primary" @click="createUser">Crear2 Usuario PGD</v-btn>
     <pre>
       {{$data.usar}}
     </pre>
@@ -19,101 +19,8 @@
   export default {
     data() {
       return {
-        users: [
-          {
-            email: "domy2cespedes@gmail.com",
-            dni: "16645353"
-        },
-        {
-            email: "lourdes_caramutti@hotmail.com",
-            dni: "16681141"
-        },
-        {
-            email: "zoila1937gustvo@gmail.com",
-            dni: "16424350"
-        },
-        {
-            email: "rchiroquezumaeta@gmail.com",
-            dni: "16466021"
-        },
-        {
-            email: "lupe668@hotmail.com",
-            dni: "32910392"
-        },
-        {
-            email: "franvica01@yahoo.es",
-            dni: "2880722"
-        },
-        {
-            email: "rosanalunacordova12@gmail.com",
-            dni: "16445147"
-        },
-        {
-            email: "jorgetumez1612@gmail.com",
-            dni: "17562337"
-        },
-        {
-            email: "victorhugochavezquesnay@gmail.com",
-            dni: "43448106"
-        },
-        {
-            email: "ceci05084@gmail.com",
-            dni: "16701309"
-        },
-        {
-            email: "alioz57@yahoo.es",
-            dni: "03844674"
-        },
-        {
-            email: "ulisesomar_15@hotmail.com",
-            dni: "16789421"
-        },
-        {
-            email: "jeannydm20@gmail.com",
-            dni: "16797401"
-        },
-        {
-            email: "pizarronancy58@gmail.com",
-            dni: "16433059"
-        },
-        {
-            email: "victormonsalve1604@gmail.com",
-            dni: "17597137"
-        },
-        {
-            email: "jesusvillegassosa201@gmail.com",
-            dni: "17423962"
-        },
-        {
-            email: "elvirafilomenaozetaguerrero@gmail.com",
-            dni: "03200300"
-        },
-        {
-            email: "oltegue@hotmail.com",
-            dni: "28105314"
-        },
-        {
-            email: "chinita70@outlook.com.ar",
-            dni: "16674697"
-        },
-        {
-            email: "rominaalejandraseclen@gmail.com",
-            dni: "60775617"
-        },
-        {
-            email: "salazarbancesjorgeluis@gmail.com",
-            dni: "16679521"
-        },
-        {
-            email: "rosavasquezrojas@hotmail.com",
-            dni: "16525151"
-        },
-        {
-            email: "pili25047@gmail.com",
-            dni: "16733828"
-        }
-        ],
-        usar: 'Usuarios de pruebassss'
+        users: [],
+        usar: 'Usuarios de pruebas'
       }
     },
     methods: {
@@ -122,26 +29,133 @@
         // console.log(this.usar)
       },
       createUser() {
-        this.users.forEach(user => {
-          auth.createUserWithEmailAndPassword(user.email, user.dni)
-          .then(function () {
-            console.log('Se creo el usuario: ' + user.email + 'Con la contraseña: '+ user.dni)
-          })
-          .catch(
-            error => {
-              console.log(error)
-            }
-          )
+        this.userNoUsers.forEach(user => {
+          const passWork = 'yosoyrinsa'
+          auth.createUserWithEmailAndPassword(user.email, passWork)
+            .then(function () {
+              console.log('Se creo el usuario: ' + user.email + 'Con la contraseña: ' + 'yosoyrinsa')
+            })
+            .catch(
+              error => {
+                console.log(error)
+              }
+            )
         })
-        // auth.createUserWithEmailAndPassword('albert_hll@hotmail.com', '09632889')
-        //   .then(function () {
-        //     console.log('Se creo el usuario: albert_hll@hotmail.com con contraseña 09632889 ')
-        //   })
+      },
+      comprobarUsuarios() {
+        let users2 = [
+          "ingridamr19@gmail.com",
+          "rocio.evelin.gv@gmail.com",
+          "shey.yupanqui@gmail.com",
+          "lizcalsina@gmail.com",
+          "bianca_botelhoro@hotmail.com",
+          "ingcarolina100@gmail.com",
+          "fabianasr1998@gmail.com",
+          "ssmendia@gmail.com",
+          "ponki1420@gmail.com",
+          "sanchezcruzmariacamila@gmail.com",
+          "fbellott8@gmail.com",
+          "smjessica97@gmail.com",
+          "ruthmencary93@gmail.com",
+          "kevin.ortiz@ucm.edu.co",
+          "kellyr_16@hotmail.com",
+          "valentina.hoyos@ucm.edu.co",
+          "cralzate@ucm.edu.co",
+          "natiestefi2606@gmail.com",
+          "covarrubiaslore@gmail.com",
+          "eva.larisa.scr@gmail.com",
+          "melina1510@gmail.com",
+          "jessicaaljure@gmail.com",
+          "mabel-calero@hotmail.com",
+          "marjorietatis@hotmail.com",
+          "katherinefonseca17@gmail.com",
+          "jorge.chicaiza@ucm.edu.co",
+          "jenny.prado4797@utc.edu.ec",
+          "gutierrez.magda22@gmail.com",
+          "zamartgoh@gmail.com",
+          "chernandezvilca@gmail.com",
+          "dani.14308@gmail.com",
+          "kgaravitod@gmail.com",
+          "mariamorera0309@gmail.com",
+          "1533041@utp.edu.pe",
+          "mildredmada129@gmail.com",
+          "rrlt2016@gmail.com",
+          "guzmansilvany@gmail.com",
+          "a3gmarcoandres@gmail.com",
+          "jalexandra35@hotmail.com",
+          "aloacosta47@gmail.com",
+          "wilsonleo31@gmail.com",
+          "deborah.bautista.g117@gmail.com",
+          "luchin4029@gmail.com",
+          "ramirezs.alondra@gmail.com",
+          "dianaprz.ind@gmail.com",
+          "barbara.tello.cabrera@gmail.com",
+          "marianacabrejos@outlook.es",
+          "escobedo1252@gmail.com",
+          "abigailmejiagamarra@gmail.com",
+          "janeramosayasta@gmail.com",
+          "lgod11@hotmail.com",
+          "elmergmch@gmail.com",
+          "sigonza200@gmail.com",
+          "ismarymaeli96@gmail.com",
+          "karla.cristina02@gmail.com",
+          "edwardcamilohm@gmail.com",
+          "evecissan@gmail.com",
+          "zpcastc295@gmail.com",
+          "romr2409@gmail.com",
+          "ldiazcon@unsa.edu.pe",
+          "pipuls_hynm@hotmail.com",
+          "MiguelOscar_2015@hotmail.com",
+          "u17214762@utp.edu.pe",
+          "darshavelasquez@gmail.com",
+          "1612564@utp.edu.pe",
+          "ingridlu.leon@gmail.com",
+          "1521050@utp.edu.pe",
+          "camilaquenallata@gmail.com",
+          "trujilloyare4@gmail.com",
+          "cnmcarmenmo0@gmail.com",
+          "karlalihon17@gmail.com",
+          "rojasvmariadelosangeles@gmail.com",
+          "fp80715@gmail.com",
+          "rcueva1407@gmail.com",
+          "jclemente@unsa.edu.pe",
+          "jckln239@gmail.com",
+          "sandymendoza0506s@gmail.com",
+          "siesquenalex55@gmail.com",
+          "ylenia.flores.plaza@gmail.com",
+          "1romiliz22@gmail.com",
+          "hannan.alvarado@ucsp.edu.pe",
+          "cristinahernandezd5@gmail.com",
+          "pedroup65@gmail.com",
+          "esegoviaca@unsa.edu.pe",
+          "pamelaquispemendieta@gmail.com",
+          "kflores0423@gmail.com",
+          "khiaracar@gmail.com",
+          "nesimarg.22@gmail.com",
+          "1622422@utp.edu.pe",
+          "karendiaz301999@gmail.com",
+          "welopezpebe@gmail.com",
+          "alfrecori@gmail.com",
+          "sandrahh191099@gmail.com",
+          "lourdeshuanuco97@gmail.com",
+          "fchacongu@gmail.com",
+          "lual6767@gmail.com",
+          "danielamilenkatelloperez@gmail.com",
+          "mari.anculle@gmail.com",
+          "milagros.cardenasm@gmail.com",
+        ]
+        let noUsers = []
+        this.users.forEach(user => {
+          if (users2.includes(user.email)) console.log(user.email, 'registrada')
+          else noUsers.push(user.email)
+        })
+        console.log(noUsers)
       }
     },
   }
 </script>
 
 <style lang="scss" scoped>
+
 
 </style>
