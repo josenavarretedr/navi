@@ -27,17 +27,17 @@
     <v-app-bar app color="primary" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="hidden-md-and-up"></v-app-bar-nav-icon>
       <v-toolbar-title class="ml-6">
-        <router-link id="navi" to="/in/cursos" tag="span" style="cursor: pointer">Campus <span style="font-weight: bold">Navi</span></router-link>
+        <router-link id="navi" to="/" tag="span" style="cursor: pointer">Campus <span style="font-weight: bold">Navi</span></router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
 
       <v-toolbar-items class="hidden-sm-and-down">
         <v-btn v-for="item in navItems" :key="item.title" :to="item.link" text>
-          <v-icon>mdi-{{ item.icon }}</v-icon>
+          <v-icon class="mr-2">mdi-{{ item.icon }}</v-icon>
           {{item.title}}
         </v-btn>
         <v-btn v-if="userIsAuthenticated" text @click="signUserOutCmp">
-          <v-icon>mdi-exit-to-app</v-icon>
+          <v-icon class="mr-2">mdi-exit-to-app</v-icon>
           Salir
         </v-btn>
       </v-toolbar-items>
@@ -52,7 +52,7 @@
     <v-footer app id="footer" class="grey--text ">
       <span>Rinsa &copy; </span>
       <v-spacer />
-      <span>2020</span>
+      <span>2021</span>
     </v-footer>
   </v-app>
 </template>
