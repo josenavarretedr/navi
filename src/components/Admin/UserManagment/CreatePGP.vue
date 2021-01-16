@@ -1,7 +1,7 @@
 <template>
   <div>
-    Hola desde creando usuarios
-    <v-btn small color="primary" @click="createUser">Crear2 Usuario PGD</v-btn>
+    Creando Usuarios en bloque
+    <v-btn small color="primary" @click="createUser">Crear usuarios DEMUNASVERANO-1</v-btn>
     <pre>
       {{$data.usar}}
     </pre>
@@ -19,7 +19,17 @@
   export default {
     data() {
       return {
-        users: [],
+        users: [
+          'gastonolivos64@gmail.com',
+          'el_solbrillaparatodos@hotmail.com',
+          'joseestebanqs@gmail.com',
+          'leo_a1977@hotmail.com',
+          'joslusoal@hotmail.com',
+          'clau1989ct@gmail.com',
+          'yasmin_498@hotmail.com',
+          'igaci2021@gmail.com',
+          'katmia.2292@hotmail.com',
+        ],
         usar: 'Usuarios de pruebas'
       }
     },
@@ -29,11 +39,11 @@
         // console.log(this.usar)
       },
       createUser() {
-        this.userNoUsers.forEach(user => {
-          const passWork = 'yosoyrinsa'
-          auth.createUserWithEmailAndPassword(user.email, passWork)
+        this.users.forEach(user => {
+          const pass = 'yosoyrinsa'
+          auth.createUserWithEmailAndPassword(user, pass)
             .then(function () {
-              console.log('Se creo el usuario: ' + user.email + 'Con la contraseña: ' + 'yosoyrinsa')
+              console.log('Se creo el usuario: ' + user + 'Con la contraseña: ' + 'yosoyrinsa')
             })
             .catch(
               error => {
