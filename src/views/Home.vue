@@ -1,14 +1,18 @@
 <template>
   <v-container fluid id="container">
     <v-row>
-      <AllCourses></AllCourses>
+      <!-- <AllCourses></AllCourses>, -->
+      <HomeMsg  class="mt-5"></HomeMsg>
+      <HomeSocial class="mt-5"></HomeSocial>
     </v-row>
   </v-container>
 </template>
 
 <script>
   // @ is an alias to /src
-  import AllCourses from '@/components/AllCourses.vue'
+  // import AllCourses from '@/components/AllCourses.vue'
+  import HomeMsg from '@/components/HomeMsg.vue'
+  import HomeSocial from '@/components/HomeSocial.vue'
   import {
     mapGetters
   } from 'vuex';
@@ -16,7 +20,9 @@
   export default {
     name: 'Home',
     components: {
-      AllCourses,
+      // AllCourses, 
+      HomeMsg,
+      HomeSocial
     },
     computed: {
       ...mapGetters(['userID'])
@@ -33,7 +39,7 @@
 </script>
 
 <style lang="scss" scoped>
-  #container {
+  #containerDiferente {
     background: #ECE9E6;
     /* fallback for old browsers */
     background: -webkit-linear-gradient(to left, #FFFFFF, #ECE9E6);
@@ -42,10 +48,10 @@
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
 
-
     background: #304352;  /* fallback for old browsers */
 background: -webkit-linear-gradient(to top, #d7d2cc, #304352);  /* Chrome 10-25, Safari 5.1-6 */
 background: linear-gradient(to top, #d7d2cc, #304352); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
 
 
   }
