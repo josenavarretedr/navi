@@ -9,12 +9,12 @@
       <v-col cols="10" sm="6" class="d-flex justify-space-around">
         <v-select :items="allCoursesID" label="Selecciona un curso" v-model="courseSelected"></v-select>
       </v-col>
-      <!-- <v-btn small @click="getSessionBTN">Cargar sesiones</v-btn> -->
-      <v-btn small @click="cargarSesiones">Cargar sesiones Nombresss</v-btn>
+      <v-btn small @click="getSessionBTN">Cargar sesiones</v-btn>
+      <!-- <v-btn small @click="cargarSesiones">Cargar sesiones Nombresss</v-btn> -->
     </v-row>
     <v-row class="mt-10">
       <v-col>
-        <!-- <v-skeleton-loader :loading="usersToShow.length == 0" type="table">
+        <v-skeleton-loader :loading="usersToShow.length == 0" type="table">
           <v-data-table dense :headers="headers" :items="usersToShow" :search="search" item-key="id">
             <template v-slot:top>
               <v-row class="d-flex justify-space-around">
@@ -75,8 +75,8 @@
             </template>
 
           </v-data-table>
-        </v-skeleton-loader> -->
-        <table style="width:100%">
+        </v-skeleton-loader>
+        <!-- <table style="width:100%">
           <tr>
             <th>Uid</th>
             <th>SessionName</th>
@@ -85,7 +85,7 @@
             <td> {{session.id}} </td>
             <td> {{session.name}} </td>
           </tr>
-        </table>
+        </table> -->
         <!-- <table style="width:100%">
           <tr>
             <th>Nombre</th>
