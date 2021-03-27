@@ -78,7 +78,6 @@ export default {
       this.docUrl = null;
       let fileList = this.files;
       Array.from(Array(fileList.length).keys()).map((x) => {
-        console.log(fileList[x]);
         this.docData = fileList[x];
         this.docName = fileList[x].name;
       });
