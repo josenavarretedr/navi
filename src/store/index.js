@@ -21,7 +21,9 @@ export default new Vuex.Store({
     courseInfo: null,
     sessionsCourse: null,
     sessionsCourseID: null,
-    allCoursesData: null
+    allCoursesData: null,
+    courseID: null,
+    studentHomeworkDone: [],
   },
   mutations: {
     setUserUID(state, payload) {
@@ -35,7 +37,7 @@ export default new Vuex.Store({
       state.allCoursesID = payload
     },
 
-    setAllCoursesData(state, payload){
+    setAllCoursesData(state, payload) {
       state.allCoursesData = payload
     },
 
@@ -43,15 +45,23 @@ export default new Vuex.Store({
       state.sessionsCourse = payload
     },
 
-    setSessionsCourseID(state,payload){
+    setSessionsCourseID(state, payload) {
       state.sessionsCourseID = payload
+    },
+
+    setCourseID(state, payload){
+      state.courseID = payload
+    },
+
+    setStudentHomeworkDone(state, payload) {
+      state.studentHomeworkDone = payload
     },
 
 
     setLoading(state, payload) {
       state.loading = payload
     },
-    setEndVar(state, payload){
+    setEndVar(state, payload) {
       state.endVar = payload
     },
     setError(state, payload) {
@@ -110,19 +120,19 @@ export default new Vuex.Store({
         })
     },
 
-    sendPasswordReset({commit},payload){
+    sendPasswordReset({ commit }, payload) {
       commit('setLoading', true)
       commit('clearError')
 
       auth.sendPasswordResetEmail(payload.email)
-      .then(function(){
-        commit('setLoading', false)
-        alert(`Se ha enviado un correo electrónico a ${payload.email} para realizar el reseteo de tu contraseña.`)
-      })
-      .catch((error) => {
-        commit('setLoading', false)
-        commit('setError', error)
-      })
+        .then(function () {
+          commit('setLoading', false)
+          alert(`Se ha enviado un correo electrónico a ${payload.email} para realizar el reseteo de tu contraseña.`)
+        })
+        .catch((error) => {
+          commit('setLoading', false)
+          commit('setError', error)
+        })
     },
 
     signUserOut({
@@ -130,7 +140,7 @@ export default new Vuex.Store({
     }) {
       auth.signOut().then(function () {
         commit('setUser', null)
-        commit('setUserUID',null)
+        commit('setUserUID', null)
       })
     },
 
@@ -219,7 +229,7 @@ export default new Vuex.Store({
         });
       });
       commit('setAllCoursesID', dataid)
-      commit('setAllCoursesData',data)      
+      commit('setAllCoursesData', data)
     },
 
 
@@ -227,7 +237,7 @@ export default new Vuex.Store({
       commit
     }, payload) {
       commit('clearSessionsCourse')
-      let sessionsID=[]
+      let sessionsID = []
       let data = []
       db.collection('courses').doc(payload).collection('sessions').get().then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
@@ -235,9 +245,27 @@ export default new Vuex.Store({
           data.push(doc.data())
         });
       });
-      commit('setSessionsCourseID',sessionsID)
+      commit('setSessionsCourseID', sessionsID)
       commit('setSessionsCourse', data)
     },
+
+    setCourseID({state, commit, dispatch},payload){
+      state.courseID = null
+      commit('setCourseID',payload)
+      dispatch('setStudentHomeworkDone')
+    },
+
+    setStudentHomeworkDone({ commit, getters }) {
+      let homeWorks = []
+      db.collection('users').doc(getters.userID).collection('courses').doc(getters.getCourseID).collection('sessions').get()
+        .then(function (querySnapshot) {
+          querySnapshot.forEach(function (doc) {
+            homeWorks.push(doc.data())
+          });
+        });
+      console.log(homeWorks)
+      commit('setStudentHomeworkDone',homeWorks)
+    }
   },
 
 
@@ -249,7 +277,7 @@ export default new Vuex.Store({
       return state.allCoursesID
     },
 
-    allCoursesData(state){
+    allCoursesData(state) {
       return state.allCoursesData
     },
 
@@ -263,14 +291,14 @@ export default new Vuex.Store({
       })
     },
 
-    getCoursesRequest(state){
+    getCoursesRequest(state) {
       return state.user.coursesRequest
     },
 
-    getCoursesRequests(state){
+    getCoursesRequests(state) {
       return state.user.coursesRequests
     },
-    
+
     getOneCourse: (state) => (id) => {
       return state.allCoursesData.filter((course) => {
         return (course.id) == id
@@ -290,16 +318,24 @@ export default new Vuex.Store({
       return state.loading
     },
 
-    endVar(state){
+    endVar(state) {
       return state.endVar
     },
 
     getSessionsCourse(state) {
-      return state.sessionsCourse.sort((a,b) =>  a.created - b.created)
+      return state.sessionsCourse.sort((a, b) => a.created - b.created)
     },
 
-    getSessionsCourseID(state){
+    getSessionsCourseID(state) {
       return state.sessionsCourseID
+    },
+
+    getCourseID(state){
+      return state.courseID
+    },
+
+    getStudentHomeworkDone(state){
+      return state.studentHomeworkDone
     }
 
   }

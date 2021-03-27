@@ -14,12 +14,14 @@
     },
     created () {
       this.setSessionsCourse(this.$route.params.id);
+      this.setCourseID(this.$route.params.id);
+      
     },
     computed: {
-      ...mapGetters(['getSessionsCourse']),
+      ...mapGetters(['getSessionsCourse','getStudentHomeworkDone']),
     },
     methods: {
-      ...mapActions(['setSessionsCourse'])
+      ...mapActions(['setSessionsCourse','setCourseID'])
     },
   }
 </script>
