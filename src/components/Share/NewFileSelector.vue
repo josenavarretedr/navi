@@ -96,8 +96,9 @@ export default {
           this.uploadValue =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         },
+        // eslint-disable-next-line no-unused-vars
         (error) => {
-          console.log(error.message);
+          // console.log(error.message);
         },
         () => {
           this.uploadValue = 100;
