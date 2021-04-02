@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import router from '@/router'
 import { v4 as uuidv4 } from 'uuid';
+import student from './modules/student'
 
 import {
   auth,
@@ -12,6 +13,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    layout: 'init-layout',
+    userClaim: 'student',
     userUID: null,
     user: null,
     loading: false,
@@ -26,7 +29,13 @@ export default new Vuex.Store({
     studentHomeworkDone: [],
   },
   mutations: {
-    setUserUID(state, payload) {
+    SET_LAYOUT(state, newLayout) {
+      state.layout = newLayout
+    },
+    SET_USER_CLAIM(state, n) {
+      state.userClaim = n
+    },
+    SET_USER_UID(state, payload) {
       state.userUID = payload
     },
     setUser(state, payload) {
@@ -49,7 +58,7 @@ export default new Vuex.Store({
       state.sessionsCourseID = payload
     },
 
-    setCourseID(state, payload){
+    setCourseID(state, payload) {
       state.courseID = payload
     },
 
@@ -103,21 +112,20 @@ export default new Vuex.Store({
         )
     },
 
-    signUserIn({
-      commit
-    }, payload) {
-
-      commit('setLoading', true)
-      commit('clearError')
-      auth.signInWithEmailAndPassword(payload.email, payload.password)
-        .then(function () {
-          commit('setLoading', false)
-          router.push('/in/cursos')
-        })
-        .catch((error) => {
-          commit('setLoading', false)
-          commit('setError', error)
-        })
+    async signUserIn({ commit }, payload) {
+      try {
+        commit('setLoading', true)
+        commit('clearError')
+        let login = await auth.signInWithEmailAndPassword(payload.email, payload.password)
+        console.log(login.uid)
+        commit('setLoading', false)
+        commit('SET_LAYOUT', 'principal-layout')
+        router.push('/in')
+      }
+      catch (error) {
+        commit('setLoading', false)
+        commit('setError', error)
+      }
     },
 
     sendPasswordReset({ commit }, payload) {
@@ -135,29 +143,13 @@ export default new Vuex.Store({
         })
     },
 
-    signUserOut({
+    async signUserOut({
       commit
     }) {
-      auth.signOut().then(function () {
-        commit('setUser', null)
-        commit('setUserUID', null)
-      })
-    },
-
-
-    // GET user information by database/{user.uid}
-
-    getUserInfo({
-      commit
-    }, uid) {
-      db.collection('users').doc(uid).get().then((doc) => {
-        if (doc.exists) {
-          commit('setUser', doc.data())
-        }
-      })
-      // .catch((error) => {
-      //   console.log('Error obteniendo el documento: ', error)
-      // })
+      await auth.signOut()
+      commit('setUser', null)
+      commit('setUserUID', null)
+      commit('SET_LAYOUT', 'init-layout')
     },
 
     // Set gloabl variables
@@ -249,9 +241,9 @@ export default new Vuex.Store({
       commit('setSessionsCourse', data)
     },
 
-    setCourseID({state, commit, dispatch},payload){
+    setCourseID({ state, commit, dispatch }, payload) {
       state.courseID = null
-      commit('setCourseID',payload)
+      commit('setCourseID', payload)
       dispatch('setStudentHomeworkDone')
     },
 
@@ -264,7 +256,7 @@ export default new Vuex.Store({
           });
         });
       console.log(homeWorks)
-      commit('setStudentHomeworkDone',homeWorks)
+      commit('setStudentHomeworkDone', homeWorks)
     }
   },
 
@@ -330,13 +322,15 @@ export default new Vuex.Store({
       return state.sessionsCourseID
     },
 
-    getCourseID(state){
+    getCourseID(state) {
       return state.courseID
     },
 
-    getStudentHomeworkDone(state){
+    getStudentHomeworkDone(state) {
       return state.studentHomeworkDone
     }
-
+  },
+  modules:{
+    student
   }
 })

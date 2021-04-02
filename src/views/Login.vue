@@ -69,6 +69,8 @@
         password: ''
       }
     },
+    created(){
+    },
     computed: {
       ...mapGetters(['error', 'loading','userID']),
     },
@@ -88,14 +90,6 @@
       resetLink(){
         this.$router.push('/reset')
       }
-    },
-    watch: {
-      userID(val) {
-        if (val !== null) this.$router.push('/')
-      }
-    },
-    mounted() {
-      if (this.userID !== null) this.$router.push('/')
     },
   }
 </script>
