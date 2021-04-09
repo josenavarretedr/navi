@@ -15,6 +15,7 @@ import Profile from '../views/Profile.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Reset from '../views/Reset.vue'
+// import EmptyCmp from '../components/Layouts/EmptyCmp.vue'
 
 Vue.use(VueRouter)
 
@@ -53,15 +54,22 @@ const routes = [{
 },
 {
   path: '/in',
-  component: Home,
+  name: 'in',
+  component: () => import('../components/Student/HomeStudent.vue'),
   // component: () => import('../components/Campus/In.vue'),
   meta: {
     auth: true
   },
+  redirect: {name: 'in.home'},
   children: [
     {
+      path: 'home',
+      name:'in.home',
+      component: Home
+    },
+    {
       path: 'profile',
-      name: 'Profile',
+      name: 'in.profile',
       component: Profile
     },
     {
@@ -70,21 +78,26 @@ const routes = [{
       component: () => import('../components/Campus/Courses.vue')
     },
     {
-      path: ':id',
-      name: 'individual',
-      component: () => import('../components/Campus/Course/Course.vue'),
+      path: ':courseID',
+      name: 'in.course',
+      // component: () => import('../components/Campus/Course/Course.vue'),
+      component: () => import('../components/Student/Course.vue'),
       children: [
         {
-          path: '',
-          component: () => import('../components/Campus/Course/Sessions.vue')
+          path: 'sessions',
+          name: 'in.course.sessions',
+          component: ()=>import('../components/Course/Sessions.vue'),
         },
         {
-          path: 'notes',
-          component: () => import('../components/Campus/Course/Notes.vue')
+          path:':sessionID',
+          name: 'in.course.session',
+          component: ()=>import('../components/Course/SessionIndividual.vue')
         },
         {
-          path: 'sesiones',
-          component: () => import('../components/Campus/Course/Sessions.vue')
+          path: 'qualifications',
+          name: 'in.course.qualifications',
+          // component: () => import('../components/Campus/Course/Notes.vue')
+          component: ()=>import('../components/Student/Qualifications.vue')
         },
         {
           path: 'cronograma',
@@ -174,31 +187,6 @@ const routes = [{
       component: () => import('../components/Admin/Enroll/UnEnroll.vue')
     }
   ]
-},
-{
-  path: '/check',
-  name: 'check',
-  component: () => import('../components/Admin/Check.vue'),
-  meta: {
-    auth: true
-  }
-},
-{
-  path: '/test',
-  name: 'test',
-  component: () => import('../components/Test/Test.vue'),
-  meta: {
-    auth: true
-  },
-  children: [{
-    path: 'hijo',
-    component: () => import('../components/Test/Hijo.vue')
-  },
-  {
-    path: 'hija',
-    component: () => import('../components/Test/Hija.vue')
-  },
-  ]
 }
 ]
 
@@ -224,26 +212,26 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   auth.onAuthStateChanged(userAuth => {
     if (userAuth) {
-      Store.commit('SET_USER_UID',userAuth.uid)
+      Store.commit('SET_USER_UID', userAuth.uid)
       auth.currentUser.getIdTokenResult()
         .then(function ({ claims }) {
           if (claims.student) {
             Store.commit('SET_USER_CLAIM', 'student')
             if (to.path.includes('/in') == true) return next()
             else {
-              return next({ path: '/in' })
+              return next({ path: '/in/home' })
             }
           } else if (claims.admin) {
             Store.commit('SET_USER_CLAIM', 'admin')
             if (to.path.includes('/admin') == true) return next()
-            else{
-              return next ({path:'/admin'})
+            else {
+              return next({ path: '/admin' })
             }
-          } else if(claims.teacher) {
+          } else if (claims.teacher) {
             Store.commit('SET_USER_CLAIM', 'teacher')
-            if(to.path.includes('/teacher') == true) return next()
-            else{
-              return next({path:'/teacher'})
+            if (to.path.includes('/teacher') == true) return next()
+            else {
+              return next({ path: '/teacher' })
             }
           }
         })

@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import router from '@/router'
 import { v4 as uuidv4 } from 'uuid';
 import student from './modules/student'
+import course from './modules/course'
 
 import {
   auth,
@@ -120,7 +121,7 @@ export default new Vuex.Store({
         console.log(login.uid)
         commit('setLoading', false)
         commit('SET_LAYOUT', 'principal-layout')
-        router.push('/in')
+        router.push('/in/home')
       }
       catch (error) {
         commit('setLoading', false)
@@ -331,6 +332,7 @@ export default new Vuex.Store({
     }
   },
   modules:{
-    student
+    student,
+    course
   }
 })

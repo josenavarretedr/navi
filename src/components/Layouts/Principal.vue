@@ -3,6 +3,7 @@
     <v-app-bar absolute color="white" elevate-on-scroll app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
+      <!-- TODO Esto puede ser un componente reactivo, dependiendo de la ubicación que cambie -->
       <v-toolbar-title class="mx-auto">Navi</v-toolbar-title>
     </v-app-bar>
     <v-navigation-drawer v-model="drawer" absolute temporary>
@@ -22,7 +23,7 @@
       <v-divider></v-divider>
       <!-- General Tools items -->
       <v-list dense>
-        <v-list-item v-for="item in items" :key="item.title" link>
+        <v-list-item v-for="item in items" :key="item.title" link :to="{name: item.pathName}">
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
@@ -73,8 +74,8 @@ export default {
       drawer: true,
       title: "Principal Layout",
       items: [
-        { title: "Home", icon: "mdi-home-city" },
-        { title: "Perfil", icon: "mdi-account" },
+        { title: "Home", icon: "mdi-home-city", pathName:'in.home' },
+        { title: "Perfil", icon: "mdi-account", pathName: 'in.profile' },
       ],
     };
   },

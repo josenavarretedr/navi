@@ -15,13 +15,7 @@ export default {
     InitLayout,
     // eslint-disable-next-line vue/no-unused-components
     PrincipalLayout,
-  },
-
-  data() {
-    return {
-      // layout: 'init-layout'
-    };
-  },
+  },  
 
   computed: {
     ...mapState(["layout", "userUID"]),
