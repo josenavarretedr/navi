@@ -24,6 +24,7 @@ export default {
   props: ["dataSession", "indexSorted"],
   computed: {
     color() {
+      // Switch en cada uno de los casos
       if (this.dataSession.homework === true) {
         return "indigo";
       } else {
@@ -31,6 +32,7 @@ export default {
       }
     },
     icons() {
+      // Switch en cada uno de los casos
       if (this.dataSession.homework === true) {
         return "mdi-buffer";
       } else {

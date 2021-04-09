@@ -1,7 +1,4 @@
-// import {
-//   db
-// } from '@/firebaseInit'
-import router from '@/router'
+
 import { db } from "../../firebaseInit"
 
 export default{
@@ -16,11 +13,10 @@ export default{
     }
   },
   actions: {
-    async getSessionsDB({commit}){
-      // console.log(router.currentRoute.params.courseID)
+    async getSessionsDB({commit},payload){
       commit('setLoading', true, { root: true })
       commit('SET_SESSIONS', [])
-      const sessions = await db.collection('courses').doc(router.currentRoute.params.courseID).collection('sessions').get()
+      const sessions = await db.collection('courses').doc(payload).collection('sessions').get()
       const sessionToPush = []
       sessions.forEach((session) => {
         sessionToPush.push(session.data())
@@ -36,6 +32,7 @@ export default{
     },
     getOneSession: (state) => (id) => {
       return state.sessions.find(session => session.id===id)
+       
     }
   }
 }

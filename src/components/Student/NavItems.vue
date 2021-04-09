@@ -33,7 +33,6 @@ export default {
         {
           text: 'Sesiones',
           pathName: 'in.course.sessions',
-          // icon: 'mdi-folder-open-outline',
           icon: 'mdi-book-open-variant',
         },
         {
@@ -49,7 +48,14 @@ export default {
     this.studentsCourses()
   },
   computed: {
-    ...mapState('student',['courses'])
+    ...mapState('student',['courses']),
+    getCurrentRoute(a){
+      if (this.$router.currentRoute.params.courseID === a){
+        return 'mdi-folder-open-outline'
+      } else {
+        return 'mdi-folder-outline'
+      } 
+    }
   },
   methods: {
     ...mapActions('student',['studentData','studentsCourses']),
