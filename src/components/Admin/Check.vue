@@ -278,7 +278,7 @@
           });
         });
         this.sessionsRQ = data
-        console.log(this.sessionsRQ)
+        // console.log(this.sessionsRQ)
       },
 
       editItem(item) {
