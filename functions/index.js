@@ -26,7 +26,7 @@ exports.AddUserRole = functions.auth.user().onCreate(async (authUser) => {
           wsp: false,
           adress: ''
         },
-        courses: ['pcom-2'],
+        courses: ['pcom-latam-12'],
         coursesRequests: []
       })
     } catch (error) {

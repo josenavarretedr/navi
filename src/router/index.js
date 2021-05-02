@@ -113,20 +113,33 @@ const routes = [{
 },
 {
   path: '/admin',
-  component: () => import('../views/Admin.vue'),
+  component: () => import('../components/Share/EmptyCmp'),
   meta: {
     auth: true
   },
+  redirect: {
+    name: 'admin.home'
+  },
   children: [
+    {
+      path: 'home',
+      name: 'admin.home',
+      component: () => import('../components/Admin/Home.vue')
+    },
     {
       name: 'users',
       path: 'admin.users',
       component: () => import('../components/Admin/Users/Edit.vue')
     },
     {
-      path: 'courses',
-      name: 'admin.courses',
-      component: () => import('../components/Admin/Courses/Create.vue')
+      path: 'course',
+      name: 'admin.course.create',
+      component: () => import('../components/Admin/Admin.vue')
+    },
+    {
+      path: 'register',
+      name: 'admin.register',
+      component: () => import('../components/Admin/UserManagment/CreatePGP')
     }
   ]
 },
@@ -196,19 +209,7 @@ const router = new VueRouter({
   routes
 })
 
-// FIXME funciona bien pero si alguien está logeado y digita '/in' lo manda al login.
 
-// router.beforeEach(async (to, from, next) => {
-//   const requiresAuth = to.matched.some(route => route.meta.auth)
-//   if (requiresAuth && !await auth.currentUser) {
-//     next('/')
-//   } else {
-//     next()
-//   }
-// });
-
-
-// Intento fallido de implementar path to admin
 router.beforeEach((to, from, next) => {
   auth.onAuthStateChanged(userAuth => {
     if (userAuth) {
