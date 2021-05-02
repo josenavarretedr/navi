@@ -4,7 +4,7 @@
       <!-- <AllCourses></AllCourses>, -->
       <HomeMsg  class="mt-5"></HomeMsg>
       <HomeSocial class="mt-5"></HomeSocial>
-      <Mantenimiento></Mantenimiento>
+      <!-- <Mantenimiento></Mantenimiento> -->
     </v-row>
   </v-container>
 </template>
@@ -12,9 +12,9 @@
 <script>
   // @ is an alias to /src
   // import AllCourses from '@/components/AllCourses.vue'
-  // import HomeMsg from '@/components/HomeMsg.vue'
-  // import HomeSocial from '@/components/HomeSocial.vue'
-  import Mantenimiento from '@/components/Mantenimiento.vue'
+  import HomeMsg from '@/components/HomeMsg.vue'
+  import HomeSocial from '@/components/HomeSocial.vue'
+  // import Mantenimiento from '@/components/Mantenimiento.vue'
   import {
     mapGetters
   } from 'vuex';
@@ -23,9 +23,9 @@
     name: 'Home',
     components: {
       // AllCourses, 
-      // HomeMsg,
-      // HomeSocial,
-      Mantenimiento
+      HomeMsg,
+      HomeSocial,
+      // Mantenimiento
     },
     computed: {
       ...mapGetters(['userID'])

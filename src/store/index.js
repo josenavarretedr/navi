@@ -263,7 +263,6 @@ export default new Vuex.Store({
             homeWorks.push(doc.data())
           });
         });
-      console.log(homeWorks)
       commit('setStudentHomeworkDone',homeWorks)
     }
   },
