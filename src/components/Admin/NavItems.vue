@@ -19,7 +19,7 @@
         </v-list-item>
       </v-list-item-group>
 
-    <v-list-group :value="false" prepend-icon="mdi-account-circle">
+    <v-list-group :value="true" prepend-icon="mdi-account-circle">
       <template v-slot:activator>
         <v-list-item-title>Users</v-list-item-title>
       </template>
@@ -47,7 +47,7 @@
           </v-list-item-content>
         </template>
 
-        <v-list-item v-for="([title, icon], i) in cruds" :key="i" link>
+        <v-list-item v-for="([title, icon, link], i) in cruds" :key="i" link :to="{name: link}">
           <v-list-item-title v-text="title"></v-list-item-title>
 
           <v-list-item-icon>
@@ -76,10 +76,10 @@ export default {
         ["Settings", "mdi-cog-outline"],
       ],
       cruds: [
-        ["Create", "mdi-plus-outline"],
-        ["Read", "mdi-file-outline"],
-        ["Update", "mdi-update"],
-        ["Delete", "mdi-delete"],
+        ["Create", "mdi-plus-outline",'admin.users.create'],
+        ["Read", "mdi-file-outline",'admin.users.read'],
+        ["Update", "mdi-update",'admin.users.update'],
+        ["Delete", "mdi-delete",'admin.users.delete'],
       ],
     };
   },

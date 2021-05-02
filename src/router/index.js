@@ -60,11 +60,11 @@ const routes = [{
   meta: {
     auth: true
   },
-  redirect: {name: 'in.home'},
+  redirect: { name: 'in.home' },
   children: [
     {
       path: 'home',
-      name:'in.home',
+      name: 'in.home',
       component: Home
     },
     {
@@ -86,18 +86,18 @@ const routes = [{
         {
           path: 'sessions',
           name: 'in.course.sessions',
-          component: ()=>import('../components/Course/Sessions.vue'),
+          component: () => import('../components/Course/Sessions.vue'),
         },
         {
-          path:':sessionID',
+          path: ':sessionID',
           name: 'in.course.session',
-          component: ()=>import('../components/Course/SessionIndividual.vue')
+          component: () => import('../components/Course/SessionIndividual.vue')
         },
         {
           path: 'qualifications',
           name: 'in.course.qualifications',
           // component: () => import('../components/Campus/Course/Notes.vue')
-          component: ()=>import('../components/Student/Qualifications.vue')
+          component: () => import('../components/Student/Qualifications.vue')
         },
         {
           path: 'cronograma',
@@ -127,9 +127,32 @@ const routes = [{
       component: () => import('../components/Admin/Home.vue')
     },
     {
-      name: 'users',
-      path: 'admin.users',
-      component: () => import('../components/Admin/Users/Edit.vue')
+      path: 'users',
+      name: 'admin.users',
+      component: () => import('../components/Share/EmptyCmp'), 
+      // component: () => import('../components/Admin/Users/Edit.vue'),
+      children: [
+        {
+          name: 'admin.users.create',
+          path: 'create',
+          component: () => import('../components/Admin/Users/Create.vue'),
+        },
+        {
+          name: 'admin.users.update',
+          path: 'update',
+          component: () => import('../components/Admin/Users/Update.vue'),
+        },
+        {
+          name: 'admin.users.read',
+          path: 'read',
+          component: () => import('../components/Admin/Users/Read.vue')
+        },
+        {
+          name: 'admin.users.delete',
+          path: 'delete',
+          component: () => import('../components/Admin/Users/Delete.vue')
+        }
+      ]
     },
     {
       path: 'course',
