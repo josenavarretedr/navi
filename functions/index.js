@@ -5,6 +5,7 @@ const admin = require('firebase-admin')
 admin.initializeApp()
 
 const db = admin.firestore()
+const auth = admin.auth()
 
 exports.AddUserRole = functions.auth.user().onCreate(async (authUser) => {
   if (authUser.email) {
@@ -26,7 +27,7 @@ exports.AddUserRole = functions.auth.user().onCreate(async (authUser) => {
           wsp: false,
           adress: ''
         },
-        courses: ['lides-mex-141'],
+        courses: [],
         coursesRequests: []
       })
     } catch (error) {
@@ -52,3 +53,19 @@ exports.setUserRole = functions.https.onCall(async (data, context) => {
   }
 
 });
+
+exports.rollCourses = functions.https.onCall((data, context) => {
+  if (!context.auth.token.admin) return
+  try {
+    let arrayToReturn = []
+    data.usersInUse.forEach(async (user) => {
+      let userRecordNoJSON = await auth.getUserByEmail(user)
+      console.log(userRecordNoJSON.toJSON())
+    })
+
+    return {arrayToReturn}
+  }
+  catch (error){
+    throw new functions.https.HttpsError('problem',error)
+  }  
+})
