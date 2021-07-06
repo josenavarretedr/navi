@@ -163,6 +163,17 @@ const routes = [{
       path: 'register',
       name: 'admin.register',
       component: () => import('../components/Admin/UserManagment/CreatePGP')
+    },
+    {
+      path: 'roll',
+      name: 'admin.rollin',
+      // component: ()=> import('../components/Admin/Enroll/EnrollOne.vue')
+      component: ()=>import('../components/Admin/UserManagment/Bloque.vue')
+    },
+    {
+      path: 'rescue',
+      name: 'admin.rescue',
+      component: ()=> import('../components/Admin/Rescue.vue')
     }
   ]
 },
