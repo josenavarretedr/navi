@@ -112,11 +112,11 @@
           ]
         } else if (this.userIsAuthenticated && this.adminSet == 1) {
           navItems = [
-          //   {
-          //   title: 'Curso',
-          //   icon: 'folder-clock-outline',
-          //   link: '/admin'
-          // },
+            {
+            title: 'Curso',
+            icon: 'folder-clock-outline',
+            link: '/admin'
+          },
           {
             title: 'Sesiones',
             icon: 'file-plus',
