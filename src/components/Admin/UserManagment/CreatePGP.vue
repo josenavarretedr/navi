@@ -2,7 +2,7 @@
   <div>
     Creando Usuarios en bloque
     <v-btn small color="primary" @click="createUser"
-      >Crear usuarios LIDES MEX x222d</v-btn
+      >Crear usuarios faltantes</v-btn
     >
     <pre>
       {{ $data.usar }}
@@ -19,14 +19,15 @@ export default {
     return {
       users: [
         
-'menfisgjgr_86@hotmail.com',
-'Pequebonita1602@gmail.com',
-'Angelitaam1993@gmail.com',
-'nayeliv_23@hotmail.com',
-'raquelita0368@hotmail.com',
-'Vic.mucio@gmail.com',
-'Suarezsalazar77@hotmail.com',
-'rocioprensanchez@gmail.com',
+'jinoalva@gmail.com',
+'daniel.3000.vega@gmail.com',
+'cesar.santos@pucp.edu.pe',
+'pragmaticmorphoid@gmail.com',
+'joelvega045@gmail.com',
+'yulilopezdaza@gmail.com',
+'kcastellarf@uniguajira.edu.co',
+'faquintero@uniguajira.edu.co',
+'ottorcoronadoe@gmail.com',
 
 ],
       usar: "Usuarios de pruebas",

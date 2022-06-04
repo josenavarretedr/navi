@@ -163,7 +163,7 @@ const routes = [{
       path: 'register',
       name: 'admin.register',
       // component: () => import('../components/Admin/UserManagment/CreatePGP')
-      component: () => import('../components/Admin/Register')
+      component: () => import('../components/Admin/UserManagment/CreatePGP.vue')
     },
     {
       path: 'roll',
