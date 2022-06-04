@@ -64,7 +64,7 @@ export default {
   data() {
     return {
       provisionalItems:[
-        { text: 'Crear curso', icon: 'mdi-clock', to: 'admin.course.create' },
+        { text: 'Crear 1 curso', icon: 'mdi-clock', to: 'admin.createonecourse' },
         { text: 'Register', icon: 'mdi-account', to: 'admin.register' },
         {text: 'Matricular Indi', icon: 'mdi-profile-plus', to: 'admin.rollin'},
         {text: 'Rescue', icon: 'mdi-alert', to: 'admin.rescue'},

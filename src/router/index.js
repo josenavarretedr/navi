@@ -160,10 +160,15 @@ const routes = [{
       component: () => import('../components/Admin/Admin.vue')
     },
     {
+      path: 'createonecourse',
+      name: 'admin.createonecourse',
+      component: () => import('../components/Admin/CreateOneCourse.vue')
+    },
+    {
       path: 'register',
       name: 'admin.register',
       // component: () => import('../components/Admin/UserManagment/CreatePGP')
-      component: () => import('../components/Admin/UserManagment/CreatePGP.vue')
+      component: () => import('../components/Admin/UserManagment/Register.vue')
     },
     {
       path: 'roll',
